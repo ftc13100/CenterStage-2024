@@ -24,10 +24,6 @@ class LeftAuto: OpMode() {
         telemetry.update()
     }
 
-    override fun start() {
-        visionPortal.stopStreaming()
-    }
-
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 

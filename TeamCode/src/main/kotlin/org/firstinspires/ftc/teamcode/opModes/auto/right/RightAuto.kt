@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.right
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.teamcode.utils.BeaverProcessor
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -12,12 +13,20 @@ class RightAuto : OpMode() {
     private lateinit var visionPortal: VisionPortal
 
     private lateinit var aprilTag: AprilTagProcessor
+    private lateinit var beaverProcessor: BeaverProcessor
 
     override fun init() {
-        initAprilTags()
+        initVisionPortal()
+    }
+
+    override fun init_loop() {
+        telemetry.addData("Identified: ", beaverProcessor.selection)
+        telemetry.update()
     }
 
     override fun loop() {
+        telemetry.addData("Identified ", beaverProcessor.selection)
+
         for (detection : AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
@@ -62,18 +71,20 @@ class RightAuto : OpMode() {
                 )
             }
         }
+
+        telemetry.update()
     }
 
     override fun stop() {
         visionPortal.close()
     }
 
-    private fun initAprilTags() {
+    private fun initVisionPortal() {
         aprilTag = AprilTagProcessor.easyCreateWithDefaults()
 
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
-            .addProcessor(aprilTag)
+            .addProcessors(aprilTag, beaverProcessor)
             .build()
     }
 }
