@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utils
+package org.firstinspires.ftc.teamcode.processors
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -12,9 +12,9 @@ import org.opencv.imgproc.Imgproc
 import kotlin.math.round
 
 class BeaverProcessor : VisionProcessor {
-    private val rectLeft = Rect(110, 42, 40, 40);
-    private val rectCenter = Rect(160, 42, 40, 40);
-    private val rectRight = Rect(210, 42, 40, 40);
+    private var rectLeft = Rect(110, 42, 40, 40);
+    private var rectCenter = Rect(160, 42, 40, 40);
+    private var rectRight = Rect(210, 42, 40, 40);
 
     var selection = Selected.NONE
 
@@ -24,7 +24,7 @@ class BeaverProcessor : VisionProcessor {
     override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
     }
 
-    override fun processFrame(frame: Mat?, captureTimeNanos: Long): Any {
+    override fun processFrame(frame: Mat, captureTimeNanos: Long): Any {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV)
 
         val satRectLeft = getAvgSaturation(hsvMat, rectLeft)
@@ -68,12 +68,14 @@ class BeaverProcessor : VisionProcessor {
         userContext: Any,
     ) {
         val selectedPaint = Paint()
-        selectedPaint.color = Color.RED
+        selectedPaint.color = Color.GREEN
         selectedPaint.style = Paint.Style.STROKE
         selectedPaint.strokeWidth = scaleCanvasDensity * 4
 
         val nonSelectedPaint = Paint()
-        nonSelectedPaint.color = Color.GREEN
+        nonSelectedPaint.color = Color.RED
+        nonSelectedPaint.style = Paint.Style.STROKE
+        nonSelectedPaint.strokeWidth = scaleCanvasDensity * 4
 
         val drawRectangleLeft = makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx)
         val drawRectangleCenter = makeGraphicsRect(rectCenter, scaleBmpPxToCanvasPx)

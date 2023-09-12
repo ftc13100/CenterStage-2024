@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.right
 
+import android.util.Size
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.utils.BeaverProcessor
+import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -85,6 +86,7 @@ class RightAuto : OpMode() {
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
             .addProcessors(aprilTag, beaverProcessor)
+            .setCameraResolution(Size(640, 480))
             .build()
     }
 }

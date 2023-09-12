@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.left
 
+import android.util.Size
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.utils.BeaverProcessor
+import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -24,6 +25,9 @@ class LeftAuto: OpMode() {
         telemetry.update()
     }
 
+    override fun start() {
+        visionPortal.setProcessorEnabled(beaverProcessor, false)
+    }
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 
@@ -85,6 +89,10 @@ class LeftAuto: OpMode() {
 
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
+            .enableLiveView(true)
+            .setAutoStopLiveView(true)
+            .setCameraResolution(Size(640, 480))
+            .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
             .addProcessors(aprilTag, beaverProcessor)
             .build()
     }
