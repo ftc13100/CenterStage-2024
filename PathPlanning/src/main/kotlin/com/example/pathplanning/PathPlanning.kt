@@ -11,7 +11,7 @@ object PathPlanning {
     @JvmStatic
     fun main(args: Array<String>) {
         val meepMeep = MeepMeep(600)
-        val startPose = Pose2d(56.0, -36.0, Math.toRadians(180.0))
+        val startPose = Pose2d(56.0, -38.0, Math.toRadians(180.0))
         val base = DefaultBotBuilder(meepMeep)
             .setDimensions(15.0, 15.0)
             .setConstraints(
@@ -25,7 +25,13 @@ object PathPlanning {
 //            .build()
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
-                    .lineTo(Vector2d(50.0, -36.0))
+                    .lineToSplineHeading(Pose2d(35.0, -38.0, Math.toRadians(90.0)))
+                    .lineTo(Vector2d(35.0, 40.0))
+                    .addTemporalMarker(5.0) {
+                        it.poseEstimate
+                    }
+                    .waitSeconds(3.0)
+//                    .splineTo(Vector2d(60.0, 50.0), Math.toRadians(180.0))
                     .build()
             }
 
