@@ -12,9 +12,9 @@ import org.opencv.imgproc.Imgproc
 import kotlin.math.round
 
 class BeaverProcessor : VisionProcessor {
-    private var rectLeft = Rect(110, 42, 40, 40);
-    private var rectCenter = Rect(160, 42, 40, 40);
-    private var rectRight = Rect(210, 42, 40, 40);
+    private var rectLeft = Rect(25, 110, 40, 40);
+    private var rectCenter = Rect(150, 110, 40, 40);
+    private var rectRight = Rect(275, 110, 40, 40);
 
     var selection = Selected.NONE
 
