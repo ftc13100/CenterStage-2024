@@ -25,5 +25,5 @@ class DriveCommand(
 
     private fun zonedDrive(drive: Double, zoneVal: Double) =
             if (drive in -zoneVal..zoneVal) { 0.0 }
-            else { sign(drive) * ((drive - zoneVal) / (1 - zoneVal)) }
+            else { sign(drive) * drive / (1 - zoneVal) - zoneVal/(1 - zoneVal) }
 }
