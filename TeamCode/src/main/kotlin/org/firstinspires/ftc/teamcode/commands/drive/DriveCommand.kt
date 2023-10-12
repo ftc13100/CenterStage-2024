@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import java.util.function.DoubleSupplier
 
-class DriveCommand(
+class  DriveCommand(
     private val subsystem: DriveSubsystem,
     private val leftX: DoubleSupplier,
     private val leftY: DoubleSupplier,
@@ -21,3 +21,7 @@ class DriveCommand(
         )
     }
 }
+private fun zonedDrive(drive: Double, zoneVal: Double) =
+    if (drive in -zoneVal..zoneVal) { 0.0 }
+    else if (drive > zoneVal) { drive / (1 - zoneVal) - zoneVal/(1 - zoneVal) }
+    else {drive / (1 - zoneVal) + zoneVal/(1 - zoneVal) }
