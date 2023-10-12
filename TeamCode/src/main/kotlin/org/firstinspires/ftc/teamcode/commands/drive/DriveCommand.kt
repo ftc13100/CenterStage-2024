@@ -22,8 +22,9 @@ class  DriveCommand(
             rightX = zonedDrive(rightX.asDouble, zoneVal),
         )
     }
+
+    private fun zonedDrive(drive: Double, zoneVal: Double) =
+        if (drive in -zoneVal..zoneVal) { 0.0 }
+        else if (drive > zoneVal) { drive / (1 - zoneVal) - zoneVal/(1 - zoneVal) }
+        else {drive / (1 - zoneVal) + zoneVal/(1 - zoneVal) }
 }
-private fun zonedDrive(drive: Double, zoneVal: Double) =
-    if (drive in -zoneVal..zoneVal) { 0.0 }
-    else if (drive > zoneVal) { drive / (1 - zoneVal) - zoneVal/(1 - zoneVal) }
-    else {drive / (1 - zoneVal) + zoneVal/(1 - zoneVal) }
