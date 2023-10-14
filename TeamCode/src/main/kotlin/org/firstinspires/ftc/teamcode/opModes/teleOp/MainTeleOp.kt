@@ -34,7 +34,7 @@ class MainTeleOp: CommandOpMode() {
 
         intakeCommand = IntakeCommand(intakeSubsystem, intake = true)
         outtakeCommand = IntakeCommand(intakeSubsystem, intake = false)
-        driveCommand = DriveCommand(driveSubsystem, leftX = driver::getLeftX, leftY = driver::getLeftY, rightX = driver::getRightX)
+        driveCommand = DriveCommand(driveSubsystem, leftX = driver::getLeftX, leftY = driver::getLeftY, rightX = driver::getRightX, 0.15)
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)
