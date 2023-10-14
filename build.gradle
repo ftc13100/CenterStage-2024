@@ -12,12 +12,9 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath 'com.android.tools.build:gradle:8.1.2'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
         classpath 'com.pinterest:ktlint:0.41.0'
-
-        // Note for FTC Teams: Do not modify this yourself.
-        classpath 'com.android.tools.build:gradle:8.0.2'
     }
 }
 

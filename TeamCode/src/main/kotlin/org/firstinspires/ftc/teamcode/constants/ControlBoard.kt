@@ -12,7 +12,7 @@ enum class ControlBoard(val deviceName: String) {
     INTAKE("intake"),
 
     // Odometry
-    ODO_LEFT_ENCODER(""),
-    ODO_RIGHT_ENCODER(""),
-    ODO_STRAFE_ENCODER(""),
+    ODO_LEFT_ENCODER("rightFront"),
+    ODO_RIGHT_ENCODER("leftFront"),
+    ODO_STRAFE_ENCODER("intake"),
 }

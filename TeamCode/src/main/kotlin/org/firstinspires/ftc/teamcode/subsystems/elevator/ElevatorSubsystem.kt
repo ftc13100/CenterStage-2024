@@ -1,40 +1,21 @@
 package org.firstinspires.ftc.teamcode.subsystems.elevator
-import com.arcrobotics.ftclib.command.SubsystemBase
+import com.arcrobotics.ftclib.controller.PIDFController
 import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.qualcomm.robotcore.hardware.TouchSensor
-import org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry
-import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.utils.PIDSubsystem
 
 class ElevatorSubsystem(
-    private val elevatorMotor: Motor,
-    private val limit: TouchSensor,
-    val telemetry: Telemetry,
- ) : SubsystemBase() {
-    init {
-        elevatorMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
-        elevatorMotor.resetEncoder()
-//        ElevatorMotor.inverted = true
-    }
+    private val elevatorMotor: Motor
+) : PIDSubsystem(
+    PIDFController(
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    )
+) {
+    override fun useOutput(output: Double, setpoint: Double) = elevatorMotor.set(output)
 
-    fun spinUp() {
-        elevatorMotor.set(1.0)
-        val current = elevatorMotor.currentPosition
-        telemetry.addData("Position", current)
-        telemetry.update()
+    override fun getMeasurement(): Double = elevatorMotor.currentPosition.toDouble()
 
-    }
 
-    fun getPosition(): Double = elevatorMotor.currentPosition.toDouble()
-
-    fun spinDown() {
-        if(!isPressed()) {
-            elevatorMotor.set(-1.0)
-        }
-    }
-
-    fun isPressed(): Boolean {
-        return limit.isPressed
-    }
-
-    fun stopSpin() = elevatorMotor.stopMotor()
- }
+}
