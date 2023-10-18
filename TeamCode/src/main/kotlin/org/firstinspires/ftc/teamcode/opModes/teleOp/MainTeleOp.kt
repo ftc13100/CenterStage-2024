@@ -42,7 +42,6 @@ class MainTeleOp: CommandOpMode() {
 
         register(driveSubsystem)
 
-        driveSubsystem.poseEstimate = PoseStorage.poseEstimate
         driveSubsystem.defaultCommand = driveCommand
     }
 }
