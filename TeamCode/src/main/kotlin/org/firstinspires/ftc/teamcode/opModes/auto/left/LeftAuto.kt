@@ -58,6 +58,51 @@ class LeftAuto: OpMode() {
 
         val detections = aprilTag.freshDetections ?: aprilTag.detections
 
+        for (detection : AprilTagDetection in aprilTag.detections) {
+            if (detection.metadata != null) {
+                telemetry.addLine(
+                    String.format(
+                        "\n==== (ID %d) %s",
+                        detection.id,
+                        detection.metadata.name
+                    )
+                )
+                telemetry.addLine(
+                    String.format(
+                        "XYZ %6.1f %6.1f %6.1f  (inch)",
+                        detection.ftcPose.x,
+                        detection.ftcPose.y,
+                        detection.ftcPose.z
+                    )
+                )
+                telemetry.addLine(
+                    String.format(
+                        "PRY %6.1f %6.1f %6.1f  (deg)",
+                        detection.ftcPose.pitch,
+                        detection.ftcPose.roll,
+                        detection.ftcPose.yaw
+                    )
+                )
+                telemetry.addLine(
+                    String.format(
+                        "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
+                        detection.ftcPose.range,
+                        detection.ftcPose.bearing,
+                        detection.ftcPose.elevation
+                    )
+                )
+            } else {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id))
+                telemetry.addLine(
+                    String.format(
+                        "Center %6.0f %6.0f   (pixels)",
+                        detection.center.x,
+                        detection.center.y
+                    )
+                )
+            }
+        }
+
         val tagPose = when (val detection = detections.find { it.metadata.id == tagId }) {
             is AprilTagDetection -> Pose2d(detection.ftcPose.yaw, detection.ftcPose.range, detection.ftcPose.bearing)
             else -> targetPose
@@ -66,6 +111,8 @@ class LeftAuto: OpMode() {
 
         drive.setWeightedDrivePower(drivePower)
         drive.update()
+
+        telemetry.update()
     }
 
     override fun stop() {

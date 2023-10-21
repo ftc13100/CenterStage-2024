@@ -27,7 +27,7 @@ class MainTeleOp: CommandOpMode() {
     override fun initialize() {
         intake = Motor(hardwareMap, ControlBoard.INTAKE.deviceName)
 
-        driveSubsystem = DriveSubsystem(SampleMecanumDrive(hardwareMap), false)
+        driveSubsystem = DriveSubsystem(SampleMecanumDrive(hardwareMap), true)
         intakeSubsystem = IntakeSubsystem(intake)
 
         driver = GamepadEx(gamepad1)

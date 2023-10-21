@@ -27,7 +27,7 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
     private var submat = Mat()
     private var hsvMat = Mat()
 
-    private val lastFrame = AtomicReference(Bitmap.createBitmap(0, 0, Bitmap.Config.RGB_565))
+    private val lastFrame = AtomicReference(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565))
 
     override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
         lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
