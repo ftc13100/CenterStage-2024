@@ -27,14 +27,14 @@ class MainTeleOp: CommandOpMode() {
     override fun initialize() {
         intake = Motor(hardwareMap, ControlBoard.INTAKE.deviceName)
 
-        driveSubsystem = DriveSubsystem(SampleMecanumDrive(hardwareMap), true)
+        driveSubsystem = DriveSubsystem(SampleMecanumDrive(hardwareMap), false)
         intakeSubsystem = IntakeSubsystem(intake)
 
         driver = GamepadEx(gamepad1)
 
         intakeCommand = IntakeCommand(intakeSubsystem, intake = true)
         outtakeCommand = IntakeCommand(intakeSubsystem, intake = false)
-        driveCommand = DriveCommand(driveSubsystem, leftX = driver::getLeftX, leftY = driver::getLeftY, rightX = driver::getRightX)
+        driveCommand = DriveCommand(driveSubsystem, leftX = driver::getLeftX, leftY = driver::getLeftY, rightX = driver::getRightX, zoneVal = 0.15)
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)
