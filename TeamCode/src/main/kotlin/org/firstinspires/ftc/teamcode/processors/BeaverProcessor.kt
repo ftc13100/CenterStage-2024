@@ -1,17 +1,23 @@
 package org.firstinspires.ftc.teamcode.processors
 
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import org.firstinspires.ftc.robotcore.external.function.Consumer
+import org.firstinspires.ftc.robotcore.external.function.Continuation
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration
 import org.firstinspires.ftc.vision.VisionProcessor
+import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.Mat
 import org.opencv.core.Rect
 import org.opencv.imgproc.Imgproc
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.round
 
-class BeaverProcessor : VisionProcessor {
+class BeaverProcessor : VisionProcessor, CameraStreamSource {
     private var rectLeft = Rect(110, 42, 40, 40);
     private var rectCenter = Rect(160, 42, 40, 40);
     private var rectRight = Rect(210, 42, 40, 40);
@@ -21,7 +27,10 @@ class BeaverProcessor : VisionProcessor {
     private var submat = Mat()
     private var hsvMat = Mat()
 
+    private val lastFrame = AtomicReference(Bitmap.createBitmap(0, 0, Bitmap.Config.RGB_565))
+
     override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
+        lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
     }
 
     override fun processFrame(frame: Mat, captureTimeNanos: Long): Any {
@@ -37,6 +46,10 @@ class BeaverProcessor : VisionProcessor {
             satRectLeft -> Selected.LEFT
             else -> Selected.RIGHT
         }
+
+        val b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565)
+        Utils.matToBitmap(frame, b)
+        lastFrame.set(b)
 
         return selection
     }
@@ -112,5 +125,9 @@ class BeaverProcessor : VisionProcessor {
         RIGHT,
         CENTER,
         NONE
+    }
+
+    override fun getFrameBitmap(continuation: Continuation<out Consumer<Bitmap>>) {
+        continuation.dispatch { it.accept(lastFrame.get()) }
     }
 }

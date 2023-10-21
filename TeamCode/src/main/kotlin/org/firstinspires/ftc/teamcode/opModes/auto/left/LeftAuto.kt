@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.left
 
 import android.util.Size
+import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
@@ -29,7 +30,10 @@ class LeftAuto: OpMode() {
 
     override fun init() {
         initVisionPortal()
+
         drive = SampleMecanumDrive(hardwareMap)
+
+        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
 
     override fun init_loop() {
@@ -45,7 +49,7 @@ class LeftAuto: OpMode() {
             BeaverProcessor.Selected.NONE -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
         }
 
-        visionPortal.setProcessorEnabled(beaverProcessor, false)
+//        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
@@ -61,6 +65,7 @@ class LeftAuto: OpMode() {
         val drivePower = (targetPose - tagPose)
 
         drive.setWeightedDrivePower(drivePower)
+        drive.update()
     }
 
     override fun stop() {
