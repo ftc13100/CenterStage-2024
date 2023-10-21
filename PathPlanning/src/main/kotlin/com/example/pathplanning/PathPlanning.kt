@@ -25,9 +25,14 @@ object PathPlanning {
 //            .build()
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
-                    .lineToSplineHeading(Pose2d(-38.0, -35.0))
-                    .lineTo(Vector2d(40.0, -35.0))
-                    .addTemporalMarker(5.0) {
+
+                    .lineTo(Vector2d(35.0, -38.0))
+                    .addTemporalMarker(2.0) {
+                        it.poseEstimate
+                    }
+                    .waitSeconds(2.0)
+                    .lineToSplineHeading(Pose2d(35.0, 38.0, Math.toRadians(90.0)))
+                    .addTemporalMarker(7.0) {
                         it.poseEstimate
                     }
                     .waitSeconds(3.0)

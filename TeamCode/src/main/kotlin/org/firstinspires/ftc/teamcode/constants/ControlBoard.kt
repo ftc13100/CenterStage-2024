@@ -15,4 +15,7 @@ enum class ControlBoard(val deviceName: String) {
     ODO_LEFT_ENCODER("rightFront"),
     ODO_RIGHT_ENCODER("leftFront"),
     ODO_STRAFE_ENCODER("intake"),
+
+    // Camera
+    CAMERA("lifecam")
 }
