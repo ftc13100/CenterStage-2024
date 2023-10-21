@@ -10,7 +10,8 @@ enum class ControlBoard(val deviceName: String) {
 
     //Intake
     INTAKE("intake"),
-
+    ELEVATOR_LEFT("elevatorLeft"),
+    ELEVATOR_RIGHT("elevatorRight"),
     // Odometry
     ODO_LEFT_ENCODER("rightFront"),
     ODO_RIGHT_ENCODER("leftFront"),

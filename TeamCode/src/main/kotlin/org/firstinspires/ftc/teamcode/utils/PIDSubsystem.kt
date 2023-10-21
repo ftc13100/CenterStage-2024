@@ -7,7 +7,7 @@ abstract class PIDSubsystem(
     private val controller: PIDFController,
 ) : SubsystemBase() {
     private var enabled: Boolean = true
-    private var setpoint: Double = controller.setPoint
+    var setpoint: Double = controller.setPoint
         set(value) {
             controller.setPoint = value
             field = value
