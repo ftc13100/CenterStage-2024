@@ -1,12 +1,18 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.left
 
 import android.util.Size
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.teamcode.constants.ControlBoard
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
+import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous
@@ -16,8 +22,14 @@ class LeftAuto: OpMode() {
 
     private lateinit var aprilTag: AprilTagProcessor
 
+    private lateinit var drive: SampleMecanumDrive
+
+    private var isFound = false
+    private var tagId = 0
+
     override fun init() {
         initVisionPortal()
+        drive = SampleMecanumDrive(hardwareMap)
     }
 
     override fun init_loop() {
@@ -26,57 +38,29 @@ class LeftAuto: OpMode() {
     }
 
     override fun start() {
+        tagId = when (beaverProcessor.selection) {
+            BeaverProcessor.Selected.LEFT -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceLeft" }.id
+            BeaverProcessor.Selected.CENTER -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
+            BeaverProcessor.Selected.RIGHT -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceRight" }.id
+            BeaverProcessor.Selected.NONE -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
+        }
+
         visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 
-        for (detection : AprilTagDetection in aprilTag.detections) {
-            if (detection.metadata != null) {
-                telemetry.addLine(
-                    String.format(
-                        "\n==== (ID %d) %s",
-                        detection.id,
-                        detection.metadata.name
-                    )
-                )
-                telemetry.addLine(
-                    String.format(
-                        "XYZ %6.1f %6.1f %6.1f  (inch)",
-                        detection.ftcPose.x,
-                        detection.ftcPose.y,
-                        detection.ftcPose.z
-                    )
-                )
-                telemetry.addLine(
-                    String.format(
-                        "PRY %6.1f %6.1f %6.1f  (deg)",
-                        detection.ftcPose.pitch,
-                        detection.ftcPose.roll,
-                        detection.ftcPose.yaw
-                    )
-                )
-                telemetry.addLine(
-                    String.format(
-                        "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
-                        detection.ftcPose.range,
-                        detection.ftcPose.bearing,
-                        detection.ftcPose.elevation
-                    )
-                )
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id))
-                telemetry.addLine(
-                    String.format(
-                        "Center %6.0f %6.0f   (pixels)",
-                        detection.center.x,
-                        detection.center.y
-                    )
-                )
-            }
-        }
+        val targetPose = Pose2d(0.0, 4.0, 0.0)
 
-        telemetry.update()
+        val detections = aprilTag.freshDetections ?: aprilTag.detections
+
+        val tagPose = when (val detection = detections.find { it.metadata.id == tagId }) {
+            is AprilTagDetection -> Pose2d(detection.ftcPose.yaw, detection.ftcPose.range, detection.ftcPose.bearing)
+            else -> targetPose
+        }
+        val drivePower = (targetPose - tagPose)
+
+        drive.setWeightedDrivePower(drivePower)
     }
 
     override fun stop() {
@@ -84,11 +68,14 @@ class LeftAuto: OpMode() {
     }
 
     private fun initVisionPortal() {
-        aprilTag = AprilTagProcessor.easyCreateWithDefaults()
+        aprilTag = AprilTagProcessor.Builder()
+            .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
+            .build()
+
         beaverProcessor = BeaverProcessor()
 
         visionPortal = VisionPortal.Builder()
-            .setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
+            .setCamera(hardwareMap.get(WebcamName::class.java, ControlBoard.CAMERA.deviceName))
             .enableLiveView(true)
             .setAutoStopLiveView(true)
             .setCameraResolution(Size(640, 480))
