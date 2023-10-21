@@ -11,7 +11,7 @@ object PathPlanning {
     @JvmStatic
     fun main(args: Array<String>) {
         val meepMeep = MeepMeep(600)
-        val startPose = Pose2d(56.0, -38.0, Math.toRadians(180.0))
+        val startPose = Pose2d(-38.0, -56.0, Math.toRadians(90.0))
         val base = DefaultBotBuilder(meepMeep)
             .setDimensions(15.0, 15.0)
             .setConstraints(
@@ -25,6 +25,7 @@ object PathPlanning {
 //            .build()
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
+
                     .lineTo(Vector2d(35.0, -38.0))
                     .addTemporalMarker(2.0) {
                         it.poseEstimate
@@ -40,10 +41,7 @@ object PathPlanning {
             }
 
         meepMeep.setBackground(
-            ImageIO.read(
-                File("PathPlanning/src/main/resources/temp_centerstage_field.png")
-            )
-//        MeepMeep.Background.FIELD_CENTERSTAGE_OFFICIAL
+            MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK
         )
             .addEntity(base)
             .start()

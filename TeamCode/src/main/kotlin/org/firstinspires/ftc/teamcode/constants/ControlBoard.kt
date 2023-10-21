@@ -8,10 +8,13 @@ enum class ControlBoard(val deviceName: String) {
     DRIVE_LEFT_REAR("leftRear"),
     DRIVE_RIGHT_REAR("rightRear"),
 
+    //Intake
+    INTAKE("intake"),
+
     // Odometry
-    ODO_LEFT_ENCODER(""),
-    ODO_RIGHT_ENCODER(""),
-    ODO_STRAFE_ENCODER(""),
+    ODO_LEFT_ENCODER("rightFront"),
+    ODO_RIGHT_ENCODER("leftFront"),
+    ODO_STRAFE_ENCODER("intake"),
 
     // Camera
     CAMERA("lifecam")
