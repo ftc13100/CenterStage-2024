@@ -1,22 +1,25 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.left
+package org.firstinspires.ftc.teamcode.opModes.auto.red.left
 
 import android.util.Size
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
+import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
+import org.firstinspires.ftc.teamcode.constants.PoseStorage
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
+import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
-@Autonomous
+@Autonomous(name = "Left Auto (Red)")
 class LeftAuto: OpMode() {
     private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
@@ -24,6 +27,9 @@ class LeftAuto: OpMode() {
     private lateinit var aprilTag: AprilTagProcessor
 
     private lateinit var drive: SampleMecanumDrive
+
+    private val startPose = Pose2d(-36.0, -61.5, Math.toRadians(90.0))
+    private lateinit var path: TrajectorySequence
 
     private var isFound = false
     private var tagId = 0
@@ -39,6 +45,19 @@ class LeftAuto: OpMode() {
     override fun init_loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
         telemetry.update()
+
+        path = drive.trajectorySequenceBuilder(startPose)
+            .lineTo(Vector2d(-38.0, -35.0))
+            .addTemporalMarker(2.0) {
+
+            }
+            .waitSeconds(2.0)
+            .lineToSplineHeading(Pose2d(35.0, -35.0, Math.toRadians(180.0)))
+            .addTemporalMarker(8.0) {
+
+            }
+            .waitSeconds(3.0)
+            .build()
     }
 
     override fun start() {
@@ -49,14 +68,14 @@ class LeftAuto: OpMode() {
             BeaverProcessor.Selected.NONE -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
         }
 
+
+        drive.poseEstimate = startPose
+        drive.followTrajectorySequenceAsync(path)
+
 //        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
-
-        val targetPose = Pose2d(0.0, 4.0, 0.0)
-
-        val detections = aprilTag.freshDetections ?: aprilTag.detections
 
         for (detection : AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
@@ -103,20 +122,15 @@ class LeftAuto: OpMode() {
             }
         }
 
-        val tagPose = when (val detection = detections.find { it.metadata.id == tagId }) {
-            is AprilTagDetection -> Pose2d(detection.ftcPose.yaw, detection.ftcPose.range, detection.ftcPose.bearing)
-            else -> targetPose
-        }
-        val drivePower = (targetPose - tagPose)
-
-        drive.setWeightedDrivePower(drivePower)
         drive.update()
-
         telemetry.update()
+
+        PoseStorage.poseEstimate = drive.poseEstimate
     }
 
     override fun stop() {
         visionPortal.close()
+        PoseStorage.poseEstimate = drive.poseEstimate
     }
 
     private fun initVisionPortal() {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.right
+package org.firstinspires.ftc.teamcode.opModes.auto.red.right
 
 import android.util.Size
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
