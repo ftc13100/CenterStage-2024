@@ -19,7 +19,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
-@Autonomous(name = "Left Auto (Red)")
+@Autonomous(name = "Left Auto (Red)", group = "Red Auto")
 class LeftAuto: OpMode() {
     private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal

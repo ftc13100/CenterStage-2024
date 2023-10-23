@@ -14,7 +14,7 @@ import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
-@Autonomous(name = "Left Auto (Blue)")
+@Autonomous(name = "Left Auto (Blue)", group = "Blue Auto")
 class LeftAuto : OpMode() {
     private lateinit var visionPortal: VisionPortal
 
