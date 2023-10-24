@@ -1,15 +1,15 @@
-package com.example.pathplanning
+package com.example.pathplanning.red.truss
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.noahbres.meepmeep.MeepMeep
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder
 
-object RedLeftAuto {
+object RedRightTrussAuto {
     @JvmStatic
     fun main(args: Array<String>) {
         val meepMeep = MeepMeep(600)
-        val startPose = Pose2d(-36.0, -61.5, Math.toRadians(-90.0))
+        val startPose = Pose2d(10.0, -61.5, Math.toRadians(-90.0))
         val base = DefaultBotBuilder(meepMeep)
             .setDimensions(17.0, 17.0)
             .setConstraints(
@@ -24,7 +24,7 @@ object RedLeftAuto {
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
 
-                    .lineTo(Vector2d(-36.0, -35.0))
+                    .lineTo(Vector2d(10.0, -35.0))
                     .addTemporalMarker(2.0) {
                         it.poseEstimate
                     }
