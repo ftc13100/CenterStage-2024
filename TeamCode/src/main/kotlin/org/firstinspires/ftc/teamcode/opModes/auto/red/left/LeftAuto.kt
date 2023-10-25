@@ -72,7 +72,7 @@ class LeftAuto: OpMode() {
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(path)
 
-//        visionPortal.setProcessorEnabled(beaverProcessor, false)
+        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)

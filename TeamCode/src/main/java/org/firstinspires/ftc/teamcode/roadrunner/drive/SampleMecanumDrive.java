@@ -228,7 +228,6 @@ public class SampleMecanumDrive extends MecanumDrive {
             motor.setPIDFCoefficients(runMode, compensatedCoefficients);
         }
     }
-
     public void setWeightedDrivePower(Pose2d drivePower) {
         Pose2d vel = drivePower;
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.drive
 
+import com.acmerobotics.roadrunner.drive.MecanumDrive
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.acmerobotics.roadrunner.localization.Localizer
@@ -61,7 +62,7 @@ class DriveSubsystem(
 
     fun turn(radians: Double) = drive.turnAsync(radians)
 
-    fun setDrivePower(drivePower: Pose2d) = drive.setDrivePower(drivePower)
+    fun setWeightedDrivePower(drivePower: Pose2d) = drive.setWeightedDrivePower(drivePower)
 
     fun trajectoryBuilder(startPose: Pose2d): TrajectoryBuilder =
         drive.trajectoryBuilder(startPose)

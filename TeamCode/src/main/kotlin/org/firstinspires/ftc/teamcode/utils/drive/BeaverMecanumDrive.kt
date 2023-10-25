@@ -30,9 +30,9 @@ class BeaverMecanumDrive(
     private val rightFront: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_FRONT.deviceName]
     private val rightRear: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_REAR.deviceName]
 
-    private val motors: List<DcMotorEx>  = listOf<DcMotorEx>(leftFront, leftRear, rightRear, rightFront)
+    private val motors  = listOf(leftFront, leftRear, rightRear, rightFront)
 
-    private var trajectorySequenceRunner: TrajectorySequenceRunner? = null
+    private lateinit var trajectorySequenceRunner: TrajectorySequenceRunner
 
     private val VEL_CONSTRAINT = SampleMecanumDrive.getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH)
     private val ACCEL_CONSTRAINT = SampleMecanumDrive.getAccelerationConstraint(MAX_ACCEL)
