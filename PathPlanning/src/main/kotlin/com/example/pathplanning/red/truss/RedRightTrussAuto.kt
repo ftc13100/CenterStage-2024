@@ -9,7 +9,7 @@ object RedRightTrussAuto {
     @JvmStatic
     fun main(args: Array<String>) {
         val meepMeep = MeepMeep(600)
-        val startPose = Pose2d(10.0, -61.5, Math.toRadians(-90.0))
+        val startPose = Pose2d(10.0, -61.5, Math.toRadians(90.0))
         val base = DefaultBotBuilder(meepMeep)
             .setDimensions(17.0, 17.0)
             .setConstraints(
@@ -29,7 +29,7 @@ object RedRightTrussAuto {
                         it.poseEstimate
                     }
                     .waitSeconds(2.0)
-                    .lineToSplineHeading(Pose2d(35.0, -35.0, Math.toRadians(180.0)))
+                    .lineToSplineHeading(Pose2d(47.5, -35.0, Math.toRadians(180.0)))
                     .addTemporalMarker(8.0) {
                         it.poseEstimate
                     }
@@ -37,9 +37,8 @@ object RedRightTrussAuto {
                     .build()
             }
 
-        meepMeep.setBackground(
-            MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK
-        )
+        meepMeep
+            .setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
             .addEntity(base)
             .start()
     }

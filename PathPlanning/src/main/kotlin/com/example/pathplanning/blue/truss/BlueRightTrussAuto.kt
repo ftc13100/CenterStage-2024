@@ -24,12 +24,13 @@ object BlueRightTrussAuto {
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
 
-                    .lineTo(Vector2d(-36.0, 35.0))
+                    .lineTo(Vector2d(-36.0, 36.0))
                     .addTemporalMarker(2.0) {
                         it.poseEstimate
                     }
                     .waitSeconds(2.0)
-                    .lineToSplineHeading(Pose2d(35.0, 35.0, Math.toRadians(180.0)))
+                    .lineTo(Vector2d(35.0, 36.0))
+                    .lineToSplineHeading(Pose2d(47.5, 36.0, Math.toRadians(180.0)))
                     .addTemporalMarker(8.0) {
                         it.poseEstimate
                     }
