@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
 import org.firstinspires.ftc.teamcode.commands.intake.IntakeCommand
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSubsystem
 
@@ -27,7 +26,7 @@ class MainTeleOp: CommandOpMode() {
     override fun initialize() {
         intake = Motor(hardwareMap, ControlBoard.INTAKE.deviceName)
 
-        driveSubsystem = DriveSubsystem(SampleMecanumDrive(hardwareMap), false)
+        driveSubsystem = DriveSubsystem(hardwareMap)
         intakeSubsystem = IntakeSubsystem(intake)
 
         driver = GamepadEx(gamepad1)

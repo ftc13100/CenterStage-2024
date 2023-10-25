@@ -6,10 +6,9 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.constants.PoseStorage.poseEstimate
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
-import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
-import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence
+import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
+import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
@@ -21,7 +20,7 @@ class RightAuto : OpMode() {
     private lateinit var aprilTag: AprilTagProcessor
     private lateinit var beaverProcessor: BeaverProcessor
 
-    private lateinit var drive: SampleMecanumDrive
+    private lateinit var drive: DriveSubsystem
 
     private val startPose = Pose2d(10.0, -61.5, Math.toRadians(90.0))
     private lateinit var path: TrajectorySequence
@@ -29,7 +28,7 @@ class RightAuto : OpMode() {
     override fun init() {
         initVisionPortal()
 
-        drive = SampleMecanumDrive(hardwareMap)
+        drive = DriveSubsystem(hardwareMap,)
 
         FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
