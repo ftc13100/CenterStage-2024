@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utils.roadrunner.drive.opmode
+package org.firstinspires.ftc.teamcode.opModes.tuning.roadrunner
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
-import java.util.Objects
 
 /**
  * This routine is designed to calculate the maximum angular velocity your bot can achieve under load.
