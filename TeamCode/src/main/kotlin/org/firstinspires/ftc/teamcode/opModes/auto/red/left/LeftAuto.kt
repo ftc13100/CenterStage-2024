@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.red.left
 
 import android.util.Size
 import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -35,6 +36,8 @@ class LeftAuto: OpMode() {
     private var tagId = 0
 
     override fun init() {
+        telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
+
         initVisionPortal()
 
         drive = DriveSubsystem(hardwareMap)
@@ -138,7 +141,7 @@ class LeftAuto: OpMode() {
             .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
             .build()
 
-        beaverProcessor = BeaverProcessor()
+        beaverProcessor = BeaverProcessor(telemetry)
 
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, ControlBoard.CAMERA.deviceName))

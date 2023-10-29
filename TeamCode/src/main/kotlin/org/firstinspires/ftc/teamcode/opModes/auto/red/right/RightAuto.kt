@@ -28,7 +28,7 @@ class RightAuto : OpMode() {
     override fun init() {
         initVisionPortal()
 
-        drive = DriveSubsystem(hardwareMap,)
+        drive = DriveSubsystem(hardwareMap)
 
         FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }

@@ -139,7 +139,7 @@ class RightAuto: OpMode() {
             .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
             .build()
 
-        beaverProcessor = BeaverProcessor()
+        beaverProcessor = BeaverProcessor(telemetry)
 
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, ControlBoard.CAMERA.deviceName))
