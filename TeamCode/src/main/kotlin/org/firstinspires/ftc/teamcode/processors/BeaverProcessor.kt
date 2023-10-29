@@ -31,6 +31,8 @@ class BeaverProcessor(
 
     private val lastFrame = AtomicReference(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565))
 
+    private val hueThresh = 150.0;
+
     override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
         lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
     }
@@ -44,7 +46,7 @@ class BeaverProcessor(
         telemetry.addData("Center Average Saturation", satRectCenter)
         telemetry.addData("Right Average Saturation", satRectRight)
 
-        selection = when (maxOf(satRectCenter, satRectRight, 150.0)) {
+        selection = when (maxOf(satRectCenter, satRectRight, hueThresh)) {
             satRectCenter -> Selected.CENTER
             satRectRight -> Selected.RIGHT
             else -> Selected.LEFT
