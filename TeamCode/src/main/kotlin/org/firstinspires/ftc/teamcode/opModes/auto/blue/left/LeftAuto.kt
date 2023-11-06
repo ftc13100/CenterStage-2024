@@ -40,8 +40,13 @@ class LeftAuto : OpMode() {
 
         path = drive.trajectorySequenceBuilder(startPose)
             .lineTo(Vector2d(10.0, 35.0))
-            .addTemporalMarker(2.0) {
-                drive.poseEstimate
+            .apply {
+                when (beaverProcessor.selection) {
+                    BeaverProcessor.Selected.LEFT -> this.lineTo(Vector2d())
+                    BeaverProcessor.Selected.CENTER -> this.lineTo(Vector2d())
+                    BeaverProcessor.Selected.RIGHT -> this.lineTo(Vector2d())
+                    else -> lineTo(Vector2d())
+                }
             }
             .waitSeconds(2.0)
             .lineToSplineHeading(

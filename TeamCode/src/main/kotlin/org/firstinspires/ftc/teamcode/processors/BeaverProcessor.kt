@@ -33,7 +33,7 @@ class BeaverProcessor(
 
     private val hueThresh = 150.0;
 
-    override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
+    override fun init(width: Int, height: Int, calibration: CameraCalibration) {
         lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
     }
 
