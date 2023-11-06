@@ -16,7 +16,6 @@ import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.sequen
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.sequencesegment.TurnSegment
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.sequencesegment.WaitSegment
 import org.firstinspires.ftc.teamcode.utils.roadrunner.util.DashboardUtil
-import java.util.Collections
 import java.util.LinkedList
 
 @Config
@@ -56,7 +55,7 @@ class TrajectorySequenceRunner(
         var driveSignal: DriveSignal? = null
         val packet = TelemetryPacket()
         val fieldOverlay = packet.fieldOverlay()
-        lateinit var currentSegment: SequenceSegment
+        var currentSegment: SequenceSegment? = null
         
         if (currentTrajectorySequence != null) {
             if (currentSegmentIndex >= currentTrajectorySequence!!.size()) {
@@ -167,38 +166,49 @@ class TrajectorySequenceRunner(
     ) {
         if (sequence != null) {
             for (i in 0 until sequence.size()) {
-                val segment = sequence[i]
-                if (segment is TrajectorySegment) {
-                    fieldOverlay.setStrokeWidth(1)
-                    fieldOverlay.setStroke(COLOR_INACTIVE_TRAJECTORY)
-                    DashboardUtil.drawSampledPath(fieldOverlay, segment.trajectory.path)
-                } else if (segment is TurnSegment) {
-                    val pose = segment.startPose
-                    fieldOverlay.setFill(COLOR_INACTIVE_TURN)
-                    fieldOverlay.fillCircle(pose.x, pose.y, 2.0)
-                } else if (segment is WaitSegment) {
-                    val pose = segment.startPose
-                    fieldOverlay.setStrokeWidth(1)
-                    fieldOverlay.setStroke(COLOR_INACTIVE_WAIT)
-                    fieldOverlay.strokeCircle(pose.x, pose.y, 3.0)
+                when (val segment = sequence[i]) {
+                    is TrajectorySegment -> {
+                        fieldOverlay.setStrokeWidth(1)
+                        fieldOverlay.setStroke(COLOR_INACTIVE_TRAJECTORY)
+                        DashboardUtil.drawSampledPath(fieldOverlay, segment.trajectory.path)
+                    }
+
+                    is TurnSegment -> {
+                        val pose = segment.startPose
+                        fieldOverlay.setFill(COLOR_INACTIVE_TURN)
+                        fieldOverlay.fillCircle(pose.x, pose.y, 2.0)
+                    }
+
+                    is WaitSegment -> {
+                        val pose = segment.startPose
+                        fieldOverlay.setStrokeWidth(1)
+                        fieldOverlay.setStroke(COLOR_INACTIVE_WAIT)
+                        fieldOverlay.strokeCircle(pose.x, pose.y, 3.0)
+                    }
                 }
             }
         }
         if (currentSegment != null) {
-            if (currentSegment is TrajectorySegment) {
-                val currentTrajectory = currentSegment.trajectory
-                fieldOverlay.setStrokeWidth(1)
-                fieldOverlay.setStroke(COLOR_ACTIVE_TRAJECTORY)
-                DashboardUtil.drawSampledPath(fieldOverlay, currentTrajectory.path)
-            } else if (currentSegment is TurnSegment) {
-                val pose = currentSegment.startPose
-                fieldOverlay.setFill(COLOR_ACTIVE_TURN)
-                fieldOverlay.fillCircle(pose.x, pose.y, 3.0)
-            } else if (currentSegment is WaitSegment) {
-                val pose = currentSegment.startPose
-                fieldOverlay.setStrokeWidth(1)
-                fieldOverlay.setStroke(COLOR_ACTIVE_WAIT)
-                fieldOverlay.strokeCircle(pose.x, pose.y, 3.0)
+            when (currentSegment) {
+                is TrajectorySegment -> {
+                    val currentTrajectory = currentSegment.trajectory
+                    fieldOverlay.setStrokeWidth(1)
+                    fieldOverlay.setStroke(COLOR_ACTIVE_TRAJECTORY)
+                    DashboardUtil.drawSampledPath(fieldOverlay, currentTrajectory.path)
+                }
+
+                is TurnSegment -> {
+                    val pose = currentSegment.startPose
+                    fieldOverlay.setFill(COLOR_ACTIVE_TURN)
+                    fieldOverlay.fillCircle(pose.x, pose.y, 3.0)
+                }
+
+                is WaitSegment -> {
+                    val pose = currentSegment.startPose
+                    fieldOverlay.setStrokeWidth(1)
+                    fieldOverlay.setStroke(COLOR_ACTIVE_WAIT)
+                    fieldOverlay.strokeCircle(pose.x, pose.y, 3.0)
+                }
             }
         }
         if (targetPose != null) {

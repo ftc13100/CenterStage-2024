@@ -32,9 +32,6 @@ class LeftAuto: OpMode() {
     private val startPose = Pose2d(-36.0, -61.5, Math.toRadians(90.0))
     private lateinit var path: TrajectorySequence
 
-    private var isFound = false
-    private var tagId = 0
-
     override fun init() {
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
@@ -64,14 +61,6 @@ class LeftAuto: OpMode() {
     }
 
     override fun start() {
-        tagId = when (beaverProcessor.selection) {
-            BeaverProcessor.Selected.LEFT -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceLeft" }.id
-            BeaverProcessor.Selected.CENTER -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
-            BeaverProcessor.Selected.RIGHT -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceRight" }.id
-            BeaverProcessor.Selected.NONE -> AprilTagGameDatabase.getCurrentGameTagLibrary().allTags.first { it.name == "BlueAllianceCenter" }.id
-        }
-
-
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(path)
 

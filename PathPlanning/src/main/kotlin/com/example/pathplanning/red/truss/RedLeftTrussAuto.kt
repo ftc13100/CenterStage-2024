@@ -9,7 +9,7 @@ object RedLeftTrussAuto {
     @JvmStatic
     fun main(args: Array<String>) {
         val meepMeep = MeepMeep(600)
-        val startPose = Pose2d(-36.0, -61.5, Math.toRadians(90.0))
+        val startPose = Pose2d(-36.0, -61.5, Math.toRadians(-90.0))
         val base = DefaultBotBuilder(meepMeep)
             .setDimensions(17.0, 17.0)
             .setConstraints(
