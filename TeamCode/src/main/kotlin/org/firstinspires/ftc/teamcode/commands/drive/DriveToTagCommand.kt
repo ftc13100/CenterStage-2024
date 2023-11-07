@@ -8,7 +8,7 @@ import java.util.function.Supplier
 
 class DriveToTagCommand(
     private val targetTag: Int,
-    private val targetPose: Supplier<Pose2d>,
+    private val targetPose: Supplier<Pose2d?>,
     private val driveSubsystem: DriveSubsystem,
     private val visionSubsystem: VisionSubsystem
 ) : CommandBase() {

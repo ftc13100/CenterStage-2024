@@ -27,8 +27,8 @@ class VisionSubsystem (
     val detectionPoses: Map<Int, AprilTagPoseFtc>
         get() = detections.associate { it.id to it.ftcPose }
 
-    val targetPose: AprilTagPoseFtc
-        get() = detectionPoses[targetId] ?: AprilTagPoseFtc(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    val targetPose: AprilTagPoseFtc?
+        get() = detectionPoses[targetId]
 
     var targetId = 0;
 
@@ -44,6 +44,7 @@ class VisionSubsystem (
 
         portal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, ControlBoard.CAMERA.deviceName))
+            .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
             .addProcessors(beaverProcessor, aprilTag)
             .build()
     }

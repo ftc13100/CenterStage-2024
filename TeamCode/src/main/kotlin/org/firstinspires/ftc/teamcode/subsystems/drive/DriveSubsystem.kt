@@ -59,6 +59,10 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
 
     var m_name = this.javaClass.simpleName
 
+    private val lateralController = PIDFController(lateralPIDFCoefficients.p, lateralPIDFCoefficients.i, lateralPIDFCoefficients.d, lateralPIDFCoefficients.f)
+    private val parallelController = PIDFController(parallelPIDFCoefficients.p, parallelPIDFCoefficients.i, parallelPIDFCoefficients.d, parallelPIDFCoefficients.f)
+    private val headingController = PIDFController(headingPIDFCoefficients.p, headingPIDFCoefficients.i, headingPIDFCoefficients.d, headingPIDFCoefficients.f)
+
     init {
         val follower: TrajectoryFollower = HolonomicPIDVAFollower(
             TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
@@ -77,7 +81,9 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         leftRear = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_LEFT_REAR.deviceName)
         rightRear = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_RIGHT_REAR.deviceName)
         rightFront = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_RIGHT_FRONT.deviceName)
+
         motors = listOf(leftFront, leftRear, rightRear, rightFront)
+
         for (motor in motors) {
             val motorConfigurationType = motor.motorType.clone()
             motorConfigurationType.achieveableMaxRPMFraction = 1.0
@@ -100,6 +106,10 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         localizer = StandardTrackingWheelLocalizer(hardwareMap)
 
         trajectorySequenceRunner = TrajectorySequenceRunner(follower, HEADING_PID)
+
+        lateralController.setPoint = DESIRED_TAG_DISTANCE
+        headingController.setPoint = Math.toRadians(180.0)
+        parallelController.setPoint = 0.0
 
         CommandScheduler.getInstance().registerSubsystem(this)
     }
@@ -196,7 +206,7 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         }
     }
 
-    fun setPIDFCoefficients(runMode: DcMotor.RunMode?, coefficients: PIDFCoefficients) {
+    fun setPIDFCoefficients(runMode: DcMotor.RunMode, coefficients: PIDFCoefficients) {
         val compensatedCoefficients = PIDFCoefficients(
             coefficients.p, coefficients.i, coefficients.d,
             coefficients.f * 12 / batteryVoltageSensor.voltage
@@ -249,10 +259,13 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         rightFront.power = frontRight
     }
 
-    fun driveToTag(error: Pose2d): Boolean {
-        val lateralController = PIDFController(lateralPIDFCoefficients.p, lateralPIDFCoefficients.i, lateralPIDFCoefficients.d, lateralPIDFCoefficients.f)
-        val parallelController = PIDFController(parallelPIDFCoefficients.p, parallelPIDFCoefficients.i, parallelPIDFCoefficients.d, parallelPIDFCoefficients.f)
-        val headingController = PIDFController(headingPIDFCoefficients.p, headingPIDFCoefficients.i, headingPIDFCoefficients.d, headingPIDFCoefficients.f)
+    fun driveToTag(error: Pose2d?): Boolean {
+        if (error == null)
+            return false
+
+        lateralController.setPIDF(lateralPIDFCoefficients.p, lateralPIDFCoefficients.i, lateralPIDFCoefficients.d, lateralPIDFCoefficients.f)
+        headingController.setPIDF(headingPIDFCoefficients.p, headingPIDFCoefficients.i, headingPIDFCoefficients.d, lateralPIDFCoefficients.f)
+        parallelController.setPIDF(parallelPIDFCoefficients.p, parallelPIDFCoefficients.i, parallelPIDFCoefficients.d, lateralPIDFCoefficients.f)
 
         val lateralError = lateralController.calculate(error.x)
         val parallelError = parallelController.calculate(error.y)
@@ -277,6 +290,9 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
 
         @JvmField
         var parallelPIDFCoefficients = PIDFCoefficients()
+
+        @JvmField
+        var DESIRED_TAG_DISTANCE = 12.0
 
         var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
         var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)

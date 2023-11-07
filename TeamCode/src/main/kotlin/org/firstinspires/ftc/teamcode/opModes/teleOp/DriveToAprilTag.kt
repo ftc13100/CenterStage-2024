@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
 import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
@@ -37,15 +38,22 @@ class DriveToAprilTag : CommandOpMode() {
 
         driveSubsystem.defaultCommand = driveCommand
 
-        driveToTagCommand = DriveToTagCommand(targetId, { Pose2d(
-            visionSubsystem.targetPose.range,
-            visionSubsystem.targetPose.yaw,
-            visionSubsystem.targetPose.bearing
-        )}, driveSubsystem, visionSubsystem)
+        driveToTagCommand = DriveToTagCommand(targetId, {
+            visionSubsystem.targetPose?.let {
+                Pose2d(
+                    it.range,
+                    it.yaw,
+                    it.bearing
+                )
+            }
+        }, driveSubsystem, visionSubsystem)
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
-                InstantCommand({ visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(5, TimeUnit.MILLISECONDS) })
+                InstantCommand({
+                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(6, TimeUnit.MILLISECONDS)
+                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 250
+                })
             )
             .schedule()
 
