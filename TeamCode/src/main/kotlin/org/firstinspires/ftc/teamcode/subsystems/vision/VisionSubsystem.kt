@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems.vision
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraControls
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.CameraControl
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
@@ -22,18 +21,18 @@ class VisionSubsystem (
     val portal: VisionPortal
     private val beaverProcessor: BeaverProcessor
     private val aprilTag: AprilTagProcessor
-    val detections: List<AprilTagDetection>
+    private val detections: List<AprilTagDetection>
         get() = aprilTag.detections
 
-    val detectionPoses: List<AprilTagPoseFtc>
-        get() = detections.map { it.ftcPose }
+    val detectionPoses: Map<Int, AprilTagPoseFtc>
+        get() = detections.associate { it.id to it.ftcPose }
 
-    val selection
-        get() = beaverProcessor.selection
+    val targetPose: AprilTagPoseFtc
+        get() = detectionPoses[targetId] ?: AprilTagPoseFtc(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
 
     var targetId = 0;
 
-    val cameraState
+    val cameraState: VisionPortal.CameraState
         get() = portal.cameraState
 
     init {

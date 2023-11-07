@@ -1,27 +1,21 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.red
+package org.firstinspires.ftc.teamcode.opModes.teleOp
 
 import com.acmerobotics.dashboard.config.Config
+import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.RunCommand
 import com.arcrobotics.ftclib.command.WaitUntilCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
+import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.CameraControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
-import org.firstinspires.ftc.teamcode.constants.ControlBoard
-import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
+import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
-import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.VisionPortal.CameraState
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.util.concurrent.TimeUnit
-import kotlin.reflect.typeOf
 
 @TeleOp
 @Config
@@ -30,6 +24,7 @@ class DriveToAprilTag : CommandOpMode() {
     private lateinit var visionSubsystem: VisionSubsystem
 
     private lateinit var driveCommand: DriveCommand
+    private lateinit var driveToTagCommand: DriveToTagCommand
 
     private lateinit var driver: GamepadEx
     override fun initialize() {
@@ -41,7 +36,12 @@ class DriveToAprilTag : CommandOpMode() {
         driveCommand = DriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX, zoneVal = 0.0)
 
         driveSubsystem.defaultCommand = driveCommand
-        register(driveSubsystem)
+
+        driveToTagCommand = DriveToTagCommand(targetId, { Pose2d(
+            visionSubsystem.targetPose.range,
+            visionSubsystem.targetPose.yaw,
+            visionSubsystem.targetPose.bearing
+        )}, driveSubsystem, visionSubsystem)
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
@@ -49,14 +49,13 @@ class DriveToAprilTag : CommandOpMode() {
             )
             .schedule()
 
-
         RunCommand({ visionSubsystem.targetId = targetId })
             .perpetually()
             .schedule()
 
         schedule(
             RunCommand({
-                for (pose in visionSubsystem.detectionPoses) {
+                for ((_, pose) in visionSubsystem.detectionPoses) {
                         telemetry.addLine(
                             String.format(
                                 "XYZ %6.1f %6.1f %6.1f  (inch)",
@@ -85,9 +84,13 @@ class DriveToAprilTag : CommandOpMode() {
 
                 telemetry.update()
             })
-                .perpetually(),
+            .perpetually(),
             driveCommand
         )
+
+        driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(driveToTagCommand)
+
+        register(driveSubsystem)
     }
 
     companion object {

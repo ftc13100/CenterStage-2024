@@ -18,6 +18,7 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.util.Angle
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.command.Subsystem
+import com.arcrobotics.ftclib.controller.PIDFController
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -248,12 +249,35 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         rightFront.power = frontRight
     }
 
+    fun driveToTag(error: Pose2d): Boolean {
+        val lateralController = PIDFController(lateralPIDFCoefficients.p, lateralPIDFCoefficients.i, lateralPIDFCoefficients.d, lateralPIDFCoefficients.f)
+        val parallelController = PIDFController(parallelPIDFCoefficients.p, parallelPIDFCoefficients.i, parallelPIDFCoefficients.d, parallelPIDFCoefficients.f)
+        val headingController = PIDFController(headingPIDFCoefficients.p, headingPIDFCoefficients.i, headingPIDFCoefficients.d, headingPIDFCoefficients.f)
+
+        val lateralError = lateralController.calculate(error.x)
+        val parallelError = parallelController.calculate(error.y)
+        val headingError = headingController.calculate(error.heading)
+
+        drive(lateralError, parallelError, headingError)
+
+        return lateralController.atSetPoint() && parallelController.atSetPoint() && headingController.atSetPoint()
+    }
+
     override val rawExternalHeading: Double
         get() = 0.0
 
     override fun getExternalHeadingVelocity() = 0.0
 
     companion object {
+        @JvmField
+        var headingPIDFCoefficients = PIDFCoefficients()
+
+        @JvmField
+        var lateralPIDFCoefficients = PIDFCoefficients()
+
+        @JvmField
+        var parallelPIDFCoefficients = PIDFCoefficients()
+
         var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
         var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
         var LATERAL_MULTIPLIER = 1.0
