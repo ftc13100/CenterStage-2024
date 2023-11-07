@@ -47,6 +47,4 @@ class VisionSubsystem (
             .addProcessors(beaverProcessor, aprilTag)
             .build()
     }
-
-    fun <T : Class<CameraControl>> getCameraControl(control: T) = portal.getCameraControl(control)
 }
