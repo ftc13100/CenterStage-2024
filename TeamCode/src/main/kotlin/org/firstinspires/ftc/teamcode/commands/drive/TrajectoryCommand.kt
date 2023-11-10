@@ -7,9 +7,9 @@ import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.Trajec
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequenceBuilder
 
 class TrajectoryCommand(
+    private val startPose: () -> Pose2d,
+    private val drive: DriveSubsystem,
     private val trajectoryToRun: (startPose: Pose2d) -> TrajectorySequence,
-    private val startPose: Pose2d,
-    private val drive: DriveSubsystem
 ) : CommandBase() {
     private lateinit var trajectory: TrajectorySequence
 
@@ -18,7 +18,7 @@ class TrajectoryCommand(
     }
 
     override fun initialize() {
-        trajectory = trajectoryToRun.invoke(startPose)
+        trajectory = trajectoryToRun.invoke(startPose.invoke())
     }
 
     override fun execute() {

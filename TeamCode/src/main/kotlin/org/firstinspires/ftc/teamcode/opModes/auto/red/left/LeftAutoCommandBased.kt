@@ -15,105 +15,64 @@ import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
 class LeftAutoCommandBased: CommandOpMode() {
     private lateinit var driveSubsystem: DriveSubsystem
     private lateinit var visionSubsystem: VisionSubsystem
+
     private lateinit var trajectory: TrajectoryCommand
+
     private lateinit var selection: Selected
     override fun initialize() {
         driveSubsystem = DriveSubsystem(hardwareMap)
         visionSubsystem = VisionSubsystem(hardwareMap, telemetry)
 
-        trajectory = TrajectoryCommand({
-                driveSubsystem.trajectorySequenceBuilder(it)
-                    .lineTo(Vector2d(-36.0, -35.0))
-                    .apply {
-                        when (selection) {
-                            Selected.LEFT -> {
-                                this.lineToSplineHeading(
-                                    Pose2d(
-                                        -45.0,
-                                        -30.0,
-                                        Math.toRadians(-45.0)
-                                    )
-                                )
-                            }
-
-                            Selected.CENTER -> {
-                                this.lineTo(
-                                    Vector2d(
-                                        -36.0,
-                                        -30.0
-                                    )
-                                )
-                            }
-
-                            Selected.RIGHT -> {
-                                this.lineToSplineHeading(
-                                    Pose2d(
-                                        -30.0,
-                                        -30.0,
-                                        Math.toRadians(-135.0)
-                                    )
-                                )
-                            }
-
-                            else -> {
-                                this.lineToSplineHeading(
-                                    Pose2d(
-                                        -45.0,
-                                        -30.0,
-                                        Math.toRadians(-45.0)
-                                    )
-                                )
-                            }
-                        }
-                    }
-                    .waitSeconds(1.0)
-                    .lineTo(Vector2d(-36.0, -35.0))
-                    .apply {
-                        if (selection == Selected.RIGHT)
-                            this
-                                .lineToSplineHeading(
-                                    Pose2d(
-                                        -36.0,
-                                        -58.0,
-                                        Math.toRadians(-90.0)
-                                    )
-                                )
-                                .lineTo(
-                                    Vector2d(
-                                        -10.0,
-                                        -58.0
-                                    )
-                                )
-                                .lineTo(
-                                    Vector2d(
-                                        -10.0,
-                                        -35.0
-                                    )
-                                )
-                    }
-                    .lineToSplineHeading(
-                        Pose2d(
-                            35.0,
-                            -35.0,
-                            Math.toRadians(180.0)
-                        )
-                    )
-                    .addTemporalMarker(
-                        when (selection) {
-                            Selected.LEFT -> 8.0
-                            Selected.RIGHT -> 13.0
-                            Selected.CENTER -> 8.0
-                            Selected.NONE -> 8.0
-                        }
-                    ) {
-
-                    }
-                    .waitSeconds(3.0)
-                    .build()
-            },
-            AutoStartPose.RED_LEFT.startPose,
+        trajectory = TrajectoryCommand(
+            AutoStartPose.RED_LEFT::startPose,
             driveSubsystem
-        )
+        ) { startPose -> driveSubsystem
+                .trajectorySequenceBuilder(startPose)
+                .lineTo(Vector2d(-36.0, -35.0))
+                .apply {
+                    when (selection) {
+                        Selected.LEFT -> lineToSplineHeading(
+                            Pose2d(
+                                -45.0,
+                                -30.0,
+                                Math.toRadians(-45.0)
+                            )
+                        )
+
+                        Selected.CENTER -> lineTo(Vector2d(-36.0, 30.0))
+                        Selected.RIGHT -> lineToSplineHeading(
+                            Pose2d(
+                                -30.0,
+                                -30.0,
+                                Math.toRadians(-135.0)
+                            )
+                        )
+
+                        else -> lineToSplineHeading(Pose2d(-45.0, -30.0, Math.toRadians(-45.0)))
+                    }
+                }
+                .waitSeconds(1.0)
+                .lineTo(Vector2d(-36.0, -35.0))
+                .apply {
+                    if (selection == Selected.RIGHT)
+                        this.lineToSplineHeading(Pose2d(-36.0, -58.0, Math.toRadians(-90.0)))
+                            .lineTo(Vector2d(-10.0, -58.0))
+                            .lineTo(Vector2d(-10.0, -35.0))
+                }
+                .lineToSplineHeading(Pose2d(35.0, -35.0, Math.toRadians(180.0)))
+                .addTemporalMarker(
+                    when (selection) {
+                        Selected.LEFT -> 8.0
+                        Selected.RIGHT -> 13.0
+                        Selected.CENTER -> 8.0
+                        Selected.NONE -> 8.0
+                    }
+                ) {
+
+                }
+                .waitSeconds(3.0)
+                .build()
+        }
 
         WaitUntilCommand(this::isStarted).andThen().schedule()
     }
