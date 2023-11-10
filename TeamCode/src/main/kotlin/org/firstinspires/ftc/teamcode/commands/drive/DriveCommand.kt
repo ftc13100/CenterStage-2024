@@ -6,9 +6,9 @@ import java.util.function.DoubleSupplier
 
 class  DriveCommand(
     private val subsystem: DriveSubsystem,
-    private val leftX: DoubleSupplier,
-    private val leftY: DoubleSupplier,
-    private val rightX: DoubleSupplier,
+    private val leftX: () -> Double,
+    private val leftY: () -> Double,
+    private val rightX: () -> Double,
     private val zoneVal: Double
 ) : CommandBase() {
     init {
@@ -16,9 +16,9 @@ class  DriveCommand(
     }
     override fun execute() {
         subsystem.drive(
-            leftY = zonedDrive(-leftY.asDouble, zoneVal),
-            leftX = zonedDrive(leftX.asDouble, zoneVal),
-            rightX = zonedDrive(rightX.asDouble, zoneVal),
+            leftY = zonedDrive(-leftY.invoke(), zoneVal),
+            leftX = zonedDrive(leftX.invoke(), zoneVal),
+            rightX = zonedDrive(rightX.invoke(), zoneVal),
         )
     }
 

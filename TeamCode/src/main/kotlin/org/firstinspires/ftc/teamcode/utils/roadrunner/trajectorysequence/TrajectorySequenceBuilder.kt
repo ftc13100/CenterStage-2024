@@ -148,11 +148,11 @@ class TrajectorySequenceBuilder(
     }
 
     fun lineToSplineHeading(endPose: Pose2d): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.lineToSplineHeading(
                 endPose, currentVelConstraint, currentAccelConstraint
             )
-        })
+        }
     }
 
     fun lineToSplineHeading(
@@ -226,23 +226,23 @@ class TrajectorySequenceBuilder(
         velConstraint: TrajectoryVelocityConstraint?,
         accelConstraint: TrajectoryAccelerationConstraint?
     ): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.back(
                 distance,
                 velConstraint,
                 accelConstraint
             )
-        })
+        }
     }
 
     fun strafeLeft(distance: Double): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.strafeLeft(
                 distance,
                 currentVelConstraint,
                 currentAccelConstraint
             )
-        })
+        }
     }
 
     fun strafeLeft(
@@ -250,23 +250,23 @@ class TrajectorySequenceBuilder(
         velConstraint: TrajectoryVelocityConstraint?,
         accelConstraint: TrajectoryAccelerationConstraint?
     ): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.strafeLeft(
                 distance,
                 velConstraint,
                 accelConstraint
             )
-        })
+        }
     }
 
     fun strafeRight(distance: Double): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.strafeRight(
                 distance,
                 currentVelConstraint,
                 currentAccelConstraint
             )
-        })
+        }
     }
 
     fun strafeRight(
@@ -274,13 +274,13 @@ class TrajectorySequenceBuilder(
         velConstraint: TrajectoryVelocityConstraint?,
         accelConstraint: TrajectoryAccelerationConstraint?
     ): TrajectorySequenceBuilder {
-        return addPath(AddPathCallback {
+        return addPath {
             currentTrajectoryBuilder!!.strafeRight(
                 distance,
                 velConstraint,
                 accelConstraint
             )
-        })
+        }
     }
 
     fun splineTo(endPosition: Vector2d, endHeading: Double): TrajectorySequenceBuilder {
@@ -770,9 +770,8 @@ class TrajectorySequenceBuilder(
         val projectedPoints: MutableList<ComparingPoints> = ArrayList()
         for (segment in sequenceSegments) {
             if (segment is TrajectorySegment) {
-                val thisSegment = segment
-                val displacement = thisSegment.trajectory.path.project(point, 0.25)
-                val projectedPoint = thisSegment.trajectory.path[displacement].vec()
+                val displacement = segment.trajectory.path.project(point, 0.25)
+                val projectedPoint = segment.trajectory.path[displacement].vec()
                 val distanceToPoint = point.minus(projectedPoint).norm()
                 var totalDisplacement = 0.0
                 for (comparingPoint in projectedPoints) {
