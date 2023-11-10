@@ -4,7 +4,10 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.WaitUntilCommand
+import com.qualcomm.hardware.motors.RevRoboticsUltraPlanetaryHdHexMotor
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
+import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.commands.drive.TrajectoryCommand
 import org.firstinspires.ftc.teamcode.constants.AutoStartPose
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor.Selected
@@ -74,6 +77,20 @@ class LeftAutoCommandBased: CommandOpMode() {
                 .build()
         }
 
-        WaitUntilCommand(this::isStarted).andThen().schedule()
+        WaitUntilCommand(this::isStarted).andThen(
+            trajectory
+        ).andThen(
+            DriveToTagCommand(5, driveSubsystem, visionSubsystem) {
+                visionSubsystem.targetPose?.let {
+                    Pose2d(
+                        it.range,
+                        it.yaw,
+                        it.bearing
+                    )
+                }
+            }
+        ).andThen(
+
+        ).schedule()
     }
 }

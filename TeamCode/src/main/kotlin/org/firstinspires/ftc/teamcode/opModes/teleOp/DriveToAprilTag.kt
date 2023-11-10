@@ -38,7 +38,7 @@ class DriveToAprilTag : CommandOpMode() {
 
         driveSubsystem.defaultCommand = driveCommand
 
-        driveToTagCommand = DriveToTagCommand(targetId, {
+        driveToTagCommand = DriveToTagCommand(targetId, driveSubsystem, visionSubsystem) {
             visionSubsystem.targetPose?.let {
                 Pose2d(
                     it.range,
@@ -46,7 +46,7 @@ class DriveToAprilTag : CommandOpMode() {
                     it.bearing
                 )
             }
-        }, driveSubsystem, visionSubsystem)
+        }
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(

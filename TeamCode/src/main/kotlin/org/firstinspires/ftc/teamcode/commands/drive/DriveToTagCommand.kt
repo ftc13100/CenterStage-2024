@@ -8,9 +8,9 @@ import java.util.function.Supplier
 
 class DriveToTagCommand(
     private val targetTag: Int,
-    private val targetPose: Supplier<Pose2d?>,
     private val driveSubsystem: DriveSubsystem,
-    private val visionSubsystem: VisionSubsystem
+    private val visionSubsystem: VisionSubsystem,
+    private val targetPose: () -> Pose2d?
 ) : CommandBase() {
     private var atTarget = false
 
@@ -22,7 +22,7 @@ class DriveToTagCommand(
     }
 
     override fun execute() {
-        atTarget = driveSubsystem.driveToTag(targetPose.get())
+        atTarget = driveSubsystem.driveToTag(targetPose.invoke())
     }
 
     override fun isFinished(): Boolean = atTarget
