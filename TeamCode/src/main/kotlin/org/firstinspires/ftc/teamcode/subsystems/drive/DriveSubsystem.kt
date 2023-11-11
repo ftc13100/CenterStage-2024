@@ -118,6 +118,11 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         return TrajectoryBuilder(startPose, Angle.norm(startHeading + if (reversed) PI else 0.0), VEL_CONSTRAINT, ACCEL_CONSTRAINT)
     }
 
+    override fun periodic() {
+        update()
+        PoseStorage.poseEstimate = poseEstimate
+    }
+
     fun drive(leftY: Double, leftX: Double, rightX: Double) {
         val (_, _, heading) = poseEstimate
 
@@ -129,9 +134,6 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         )
 
         setWeightedDrivePower(Pose2d(x, y, -rightX))
-
-        update()
-        PoseStorage.poseEstimate = poseEstimate
     }
 
     fun trajectorySequenceBuilder(startPose: Pose2d): TrajectorySequenceBuilder {
