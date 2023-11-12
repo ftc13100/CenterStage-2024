@@ -262,8 +262,10 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
     }
 
     fun driveToTag(error: Pose2d?): Boolean {
-        if (error == null)
+        if (error == null) {
+            drive(0.0, 0.0, 0.0)
             return false
+        }
 
         lateralController.setPIDF(lateralPIDFCoefficients.p, lateralPIDFCoefficients.i, lateralPIDFCoefficients.d, lateralPIDFCoefficients.f)
         headingController.setPIDF(headingPIDFCoefficients.p, headingPIDFCoefficients.i, headingPIDFCoefficients.d, lateralPIDFCoefficients.f)

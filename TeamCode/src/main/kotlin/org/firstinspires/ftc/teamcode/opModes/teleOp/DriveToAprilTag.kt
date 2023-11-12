@@ -51,8 +51,8 @@ class DriveToAprilTag : CommandOpMode() {
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
                 InstantCommand({
-                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(6, TimeUnit.MILLISECONDS)
-                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 250
+                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(2, TimeUnit.MILLISECONDS)
+                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 500
                 })
             )
             .schedule()
@@ -96,9 +96,7 @@ class DriveToAprilTag : CommandOpMode() {
             driveCommand
         )
 
-        driver.getGamepadButton(GamepadKeys.Button.A).whenPressed(driveToTagCommand)
-
-        register(driveSubsystem)
+        driver.getGamepadButton(GamepadKeys.Button.A).whileHeld(driveToTagCommand)
     }
 
     companion object {

@@ -24,6 +24,9 @@ class VisionSubsystem (
     private val detections: List<AprilTagDetection>
         get() = aprilTag.detections
 
+    val selection: BeaverProcessor.Selected
+        get() = beaverProcessor.selection
+
     val detectionPoses: Map<Int, AprilTagPoseFtc>
         get() = detections.associate { it.id to it.ftcPose }
 

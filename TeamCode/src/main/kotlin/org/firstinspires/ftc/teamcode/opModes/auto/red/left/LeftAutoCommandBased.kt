@@ -3,9 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes.auto.red.left
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.arcrobotics.ftclib.command.CommandOpMode
-import com.arcrobotics.ftclib.command.WaitUntilCommand
-import com.qualcomm.hardware.motors.RevRoboticsUltraPlanetaryHdHexMotor
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver
+import com.arcrobotics.ftclib.command.InstantCommand
+import com.arcrobotics.ftclib.command.PerpetualCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.commands.drive.TrajectoryCommand
@@ -77,20 +76,30 @@ class LeftAutoCommandBased: CommandOpMode() {
                 .build()
         }
 
-        WaitUntilCommand(this::isStarted).andThen(
-            trajectory
-        ).andThen(
-            DriveToTagCommand(5, driveSubsystem, visionSubsystem) {
-                visionSubsystem.targetPose?.let {
-                    Pose2d(
-                        it.range,
-                        it.yaw,
-                        it.bearing
-                    )
+        PerpetualCommand(
+            InstantCommand(
+                { selection = visionSubsystem.selection },
+                visionSubsystem
+            )
+        )
+            .interruptOn(::isStarted)
+            .andThen(
+                trajectory
+            )
+            .andThen(
+                DriveToTagCommand(5, driveSubsystem, visionSubsystem) {
+                    visionSubsystem.targetPose?.let {
+                        Pose2d(
+                            it.range,
+                            it.yaw,
+                            it.bearing
+                        )
+                    }
                 }
-            }
-        ).andThen(
+            )
+            .andThen(
 
-        ).schedule()
+            )
+            .schedule()
     }
 }
