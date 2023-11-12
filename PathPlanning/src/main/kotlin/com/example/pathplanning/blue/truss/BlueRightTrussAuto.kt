@@ -23,7 +23,6 @@ object BlueRightTrussAuto {
 //            .build()
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
-
                     .lineTo(Vector2d(-36.0, 36.0))
                     .addTemporalMarker(2.0) {
                         it.poseEstimate

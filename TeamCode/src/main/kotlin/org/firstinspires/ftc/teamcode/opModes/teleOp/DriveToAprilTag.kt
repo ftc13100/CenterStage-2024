@@ -12,11 +12,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
-import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
+import org.firstinspires.ftc.teamcode.commands.drive.TrajectoryCommand
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
 import org.firstinspires.ftc.vision.VisionPortal.CameraState
 import java.util.concurrent.TimeUnit
+import kotlin.math.cos
+import kotlin.math.sin
 
 @TeleOp
 @Config
@@ -25,7 +27,7 @@ class DriveToAprilTag : CommandOpMode() {
     private lateinit var visionSubsystem: VisionSubsystem
 
     private lateinit var driveCommand: DriveCommand
-    private lateinit var driveToTagCommand: DriveToTagCommand
+    private lateinit var driveToTagCommand: TrajectoryCommand
 
     private lateinit var driver: GamepadEx
     override fun initialize() {
@@ -38,21 +40,30 @@ class DriveToAprilTag : CommandOpMode() {
 
         driveSubsystem.defaultCommand = driveCommand
 
-        driveToTagCommand = DriveToTagCommand(targetId, driveSubsystem, visionSubsystem) {
-            visionSubsystem.targetPose?.let {
-                Pose2d(
-                    it.range,
-                    it.yaw,
-                    it.bearing
+        driveToTagCommand = TrajectoryCommand(
+            driveSubsystem::poseEstimate,
+            driveSubsystem
+        ) {
+            val detectionPose = visionSubsystem.targetPose
+                ?: return@TrajectoryCommand driveSubsystem.trajectorySequenceBuilder(it).waitSeconds(0.0).build()
+
+            return@TrajectoryCommand driveSubsystem
+                .trajectorySequenceBuilder(it)
+                .lineToSplineHeading(
+                    Pose2d(
+                        it.x + CAMERA_X + detectionPose.x - DriveSubsystem.DESIRED_TAG_DISTANCE * sin(detectionPose.yaw),
+                        it.y + CAMERA_Y + detectionPose.y - DriveSubsystem.DESIRED_TAG_DISTANCE * cos(detectionPose.yaw),
+                        Math.toRadians(180.0) + detectionPose.yaw
+                    )
                 )
-            }
+                .build()
         }
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
                 InstantCommand({
-                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(2, TimeUnit.MILLISECONDS)
-                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 500
+                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(6, TimeUnit.MILLISECONDS)
+                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 250
                 })
             )
             .schedule()
@@ -101,6 +112,15 @@ class DriveToAprilTag : CommandOpMode() {
 
     companion object {
         @JvmField
-        var targetId = 5;
+        var targetId = 5
+
+        @JvmField
+//        var CAMERA_X = 8.5
+        var CAMERA_X = 0.0
+
+        @JvmField
+//        var CAMERA_Y = 4.5
+        var CAMERA_Y = 0.0
+
     }
 }
