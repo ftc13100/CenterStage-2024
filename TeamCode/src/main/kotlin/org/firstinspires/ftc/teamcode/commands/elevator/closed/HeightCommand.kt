@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.commands.elevator.closed
 
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.elevator.ElevatorSubsystem
-import org.firstinspires.ftc.teamcode.subsystems.elevator.ProfiledElevatorSubsystem
 
 class HeightCommand(
     private val subsystem: ElevatorSubsystem,

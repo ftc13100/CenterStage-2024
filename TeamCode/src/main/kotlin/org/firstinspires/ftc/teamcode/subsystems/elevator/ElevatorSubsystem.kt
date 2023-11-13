@@ -22,7 +22,11 @@ class ElevatorSubsystem(
     private val elevatorMotors = MotorGroup(elevatorLeft, elevatorRight)
     private val elevatorServos = ServoGroup(servoLeft, servoRight)
 
-    private val flipped = elevatorServos.position == 1.0
+    val atSetpoint
+        get() = getMeasurement() == setpoint
+
+    private val flipped
+        get() = elevatorServos.position == 1.0
 
     override fun useOutput(output: Double, setpoint: Double) = elevatorMotors.set(output)
 
