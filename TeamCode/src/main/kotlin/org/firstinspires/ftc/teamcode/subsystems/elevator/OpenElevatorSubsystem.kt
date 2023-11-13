@@ -35,5 +35,5 @@ class OpenElevatorSubsystem(
         return limit.isPressed
     }
 
-    fun stopSpin() = elevatorMotor.stopMotor()
+    fun stallSpin() = elevatorMotor.stopMotor()
 }
