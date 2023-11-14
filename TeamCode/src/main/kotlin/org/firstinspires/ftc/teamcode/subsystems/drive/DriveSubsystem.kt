@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySe
 
 class DriveSubsystem(
     private val drive: SampleMecanumDrive,
-    private val fieldCentric: Boolean
+    private val fieldCentric: Boolean,
 ) : SubsystemBase() {
     val isBusy: Boolean
         get() = drive.isBusy
@@ -33,9 +33,11 @@ class DriveSubsystem(
         set(pose) {
             drive.poseEstimate = pose
         }
+
     init {
         poseEstimate = PoseStorage.poseEstimate
     }
+
     fun setMode(mode: DcMotor.RunMode) = drive.setMode(mode)
 
     fun setPIDFCoefficients(mode: DcMotor.RunMode, coefficients: PIDFCoefficients) =

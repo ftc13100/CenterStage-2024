@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous
-class LeftAuto: OpMode() {
+class LeftAuto : OpMode() {
     private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
 
@@ -51,6 +51,7 @@ class LeftAuto: OpMode() {
 
 //        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
+
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 
@@ -58,7 +59,7 @@ class LeftAuto: OpMode() {
 
         val detections = aprilTag.freshDetections ?: aprilTag.detections
 
-        for (detection : AprilTagDetection in aprilTag.detections) {
+        for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
                     String.format(
@@ -104,7 +105,12 @@ class LeftAuto: OpMode() {
         }
 
         val tagPose = when (val detection = detections.find { it.metadata.id == tagId }) {
-            is AprilTagDetection -> Pose2d(detection.ftcPose.yaw, detection.ftcPose.range, detection.ftcPose.bearing)
+            is AprilTagDetection -> Pose2d(
+                detection.ftcPose.yaw,
+                detection.ftcPose.range,
+                detection.ftcPose.bearing
+            )
+
             else -> targetPose
         }
         val drivePower = (targetPose - tagPose)

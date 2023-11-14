@@ -24,21 +24,22 @@ import kotlin.Metadata;
         d2 = {"Lorg/firstinspires/ftc/teamcode/processors/BeaverProcessorJava;", "Lorg/firstinspires/ftc/vision/VisionProcessor;", "()V", "hsvMat", "Lorg/opencv/core/Mat;", "rectCenter", "Lorg/opencv/core/Rect;", "rectLeft", "rectRight", "selection", "Lorg/firstinspires/ftc/teamcode/processors/BeaverProcessorJava$Selected;", "getSelection", "()Lorg/firstinspires/ftc/teamcode/processors/BeaverProcessorJava$Selected;", "setSelection", "(Lorg/firstinspires/ftc/teamcode/processors/BeaverProcessorJava$Selected;)V", "submat", "getAvgSaturation", "", "input", "rect", "init", "", "width", "", "height", "calibration", "Lorg/firstinspires/ftc/robotcore/internal/camera/calibration/CameraCalibration;", "makeGraphicsRect", "Landroid/graphics/Rect;", "scaleBmpPxToCanvasPx", "", "onDrawFrame", "canvas", "Landroid/graphics/Canvas;", "onscreenWidth", "onscreenHeight", "scaleCanvasDensity", "userContext", "", "processFrame", "frame", "captureTimeNanos", "", "Selected", "TeamCode_debug"}
 )
 public final class BeaverProcessorJava implements VisionProcessor {
+    private final Mat hsvMat = new Mat();
     public Rect rectLeft = new Rect(25, 110, 40, 40);
     public Rect rectCenter = new Rect(150, 110, 40, 40);
     public Rect rectRight = new Rect(275, 110, 40, 40);
     Selected selection = Selected.NONE;
-    private Mat submat = new Mat();
-    private final Mat hsvMat = new Mat();
-
     Telemetry telemetry;
+    private Mat submat = new Mat();
+
+    public BeaverProcessorJava(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
 
     @NotNull
     public Selected getSelection() {
         return this.selection;
     }
-
-    public BeaverProcessorJava(Telemetry telemetry) { this.telemetry = telemetry; }
 
     public void init(int width, int height, @Nullable CameraCalibration calibration) {
     }
@@ -62,14 +63,14 @@ public final class BeaverProcessorJava implements VisionProcessor {
     }
 
     private android.graphics.Rect makeGraphicsRect(Rect rect, float scaleBmpPxToCanvasPx) {
-        float var4 = (float)rect.x * scaleBmpPxToCanvasPx;
-        int left = (int)((float)Math.rint(var4));
-        float var5 = (float)rect.y * scaleBmpPxToCanvasPx;
-        int top = (int)((float)Math.rint(var5));
-        float var6 = (float)rect.width * scaleBmpPxToCanvasPx;
-        int right = left + (int)((float)Math.rint(var6));
-        float var7 = (float)rect.height * scaleBmpPxToCanvasPx;
-        int bottom = top + (int)((float)Math.rint(var7));
+        float var4 = (float) rect.x * scaleBmpPxToCanvasPx;
+        int left = (int) ((float) Math.rint(var4));
+        float var5 = (float) rect.y * scaleBmpPxToCanvasPx;
+        int top = (int) ((float) Math.rint(var5));
+        float var6 = (float) rect.width * scaleBmpPxToCanvasPx;
+        int right = left + (int) ((float) Math.rint(var6));
+        float var7 = (float) rect.height * scaleBmpPxToCanvasPx;
+        int bottom = top + (int) ((float) Math.rint(var7));
         return new android.graphics.Rect(left, top, right, bottom);
     }
 
@@ -116,6 +117,7 @@ public final class BeaverProcessorJava implements VisionProcessor {
                 break;
         }
     }
+
     public enum Selected {
         LEFT,
         RIGHT,

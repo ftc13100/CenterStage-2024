@@ -5,7 +5,7 @@ import com.acmerobotics.roadrunner.localization.Localizer
 import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer
 
 class AprilTagThreeWheelLocalizer(
-    private val odometry: StandardTrackingWheelLocalizer
+    private val odometry: StandardTrackingWheelLocalizer,
 ) : Localizer {
     private var _poseEstimate: Pose2d = Pose2d()
 

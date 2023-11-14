@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subsystems.elevator.ElevatorSubsystem
 
 class OuttakeCommand(
     height: Double,
-    elevatorSubsystem: ElevatorSubsystem
+    elevatorSubsystem: ElevatorSubsystem,
 ) : SequentialCommandGroup(
     HeightCommand(elevatorSubsystem, height),
     WaitUntilCommand(elevatorSubsystem::atSetpoint),

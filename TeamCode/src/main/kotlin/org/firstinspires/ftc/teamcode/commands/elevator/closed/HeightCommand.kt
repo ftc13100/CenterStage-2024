@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.elevator.ElevatorSubsystem
 
 class HeightCommand(
     private val subsystem: ElevatorSubsystem,
-    private val goal: Double
+    private val goal: Double,
 ) : CommandBase() {
 
     override fun initialize() {

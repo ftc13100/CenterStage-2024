@@ -1,42 +1,48 @@
 package org.firstinspires.ftc.teamcode.subsystems.elevator
+
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.arcrobotics.ftclib.hardware.motors.MotorGroup
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.utils.ServoGroup
 
 class OpenElevatorSubsystem(
-    private val elevatorMotor: Motor,
+    motorLeft: Motor,
+    motorRight: Motor,
     private val limit: TouchSensor,
     val telemetry: Telemetry,
     servoLeft: Servo,
-    servoRight: Servo
+    servoRight: Servo,
 ) : SubsystemBase() {
-
     private val elevatorServos = ServoGroup(servoLeft, servoRight)
+
+    private val elevatorMotors = MotorGroup(motorLeft, motorRight)
+
     val flipped
         get() = elevatorServos.position == 1.0
 
+
     init {
-        elevatorMotor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
-        elevatorMotor.resetEncoder()
+        elevatorMotors.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
+        elevatorMotors.resetEncoder()
 //        ElevatorMotor.inverted = true
     }
 
     fun spinUp() {
-        elevatorMotor.set(1.0)
-        val current = elevatorMotor.currentPosition
+        elevatorMotors.set(1.0)
+        val current = elevatorMotors.currentPosition
         telemetry.addData("Position", current)
         telemetry.update()
 
     }
 
-    fun getPosition(): Double = elevatorMotor.currentPosition.toDouble()
+    fun getPosition(): Double = elevatorMotors.currentPosition.toDouble()
 
     fun spinDown() {
-        if(!isPressed()) {
-            elevatorMotor.set(-1.0)
+        if (!isPressed()) {
+            elevatorMotors.set(-1.0)
         }
     }
 
@@ -44,7 +50,8 @@ class OpenElevatorSubsystem(
         return limit.isPressed
     }
 
-    fun stallSpin() = elevatorMotor.stopMotor()
+    fun stallSpin() = elevatorMotors.stopMotor()
 
-    fun flipOuttake() = if (flipped) elevatorServos.position = 0.0 else elevatorServos.position = 1.0
+    fun flipOuttake() =
+        if (flipped) elevatorServos.position = 0.0 else elevatorServos.position = 1.0
 }

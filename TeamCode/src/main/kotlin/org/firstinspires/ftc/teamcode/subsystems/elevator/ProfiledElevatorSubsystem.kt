@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.utils.ProfiledPIDSubsystem
 
 class ProfiledElevatorSubsystem(
     elevatorLeft: Motor,
-    elevatorRight: Motor
+    elevatorRight: Motor,
 ) : ProfiledPIDSubsystem(
     ProfiledPIDController(
         0.0,
@@ -20,7 +20,9 @@ class ProfiledElevatorSubsystem(
     )
 ) {
     private val elevatorMotors = MotorGroup(elevatorLeft, elevatorRight)
-    override fun useOutput(output: Double, setpoint: TrapezoidProfile.State) = elevatorMotors.set(output)
+
+    override fun useOutput(output: Double, setpoint: TrapezoidProfile.State) =
+        elevatorMotors.set(output)
 
     override fun getMeasurement(): Double = elevatorMotors.currentPosition.toDouble()
 

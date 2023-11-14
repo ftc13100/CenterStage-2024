@@ -10,25 +10,24 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 
 /**
- *   X / ▢         - Front Left
- *   Y / Δ         - Front Right
- *   B / O         - Rear  Right
- *   A / X         - Rear  Left
- *                                    The buttons are mapped to match the wheels spatially if you
- *                                    were to rotate the gamepad 45deg°. x/square is the front left
- *                    ________        and each button corresponds to the wheel as you go clockwise
- *                   / ______ \
- *     ------------.-'   _  '-..+              Front of Bot
- *              /   _  ( Y )  _  \                  ^
- *             |  ( X )  _  ( B ) |     Front Left   \    Front Right
- *        ___  '.      ( A )     /|       Wheel       \      Wheel
- *      .'    '.    '-._____.-'  .'       (x/▢)        \     (Y/Δ)
- *     |       |                 |                      \
- *      '.___.' '.               |          Rear Left    \   Rear Right
- *               '.             /             Wheel       \    Wheel
- *                \.          .'              (A/X)        \   (B/O)
- *                  \________/
- *
+ * X / ▢         - Front Left
+ * Y / Δ         - Front Right
+ * B / O         - Rear  Right
+ * A / X         - Rear  Left
+ * The buttons are mapped to match the wheels spatially if you
+ * were to rotate the gamepad 45deg°. x/square is the front left
+ * ________        and each button corresponds to the wheel as you go clockwise
+ * / ______ \
+ * ------------.-'   _  '-..+              Front of Bot
+ * /   _  ( Y )  _  \                  ^
+ * |  ( X )  _  ( B ) |     Front Left   \    Front Right
+ * ___  '.      ( A )     /|       Wheel       \      Wheel
+ * .'    '.    '-._____.-'  .'       (x/▢)        \     (Y/Δ)
+ * |       |                 |                      \
+ * '.___.' '.               |          Rear Left    \   Rear Right
+ * '.             /             Wheel       \    Wheel
+ * \.          .'              (A/X)        \   (B/O)
+ * \________/
  */
 //@Disabled
 //@Disabled

@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.elevator.ProfiledElevatorSubsys
 
 class ProfiledHeightCommand(
     private val subsystem: ProfiledElevatorSubsystem,
-    private val goal: Double
+    private val goal: Double,
 ) : CommandBase() {
     override fun initialize() {
         subsystem.setGoal(goal)

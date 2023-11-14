@@ -16,6 +16,7 @@ public class Encoder {
     private int lastPosition;
     private double velocityEstimate;
     private double lastUpdateTime;
+
     public Encoder(DcMotorEx motor, NanoClock clock) {
         this.motor = motor;
         this.clock = clock;
@@ -26,6 +27,7 @@ public class Encoder {
         this.velocityEstimate = 0.0;
         this.lastUpdateTime = clock.seconds();
     }
+
     public Encoder(DcMotorEx motor) {
         this(motor, NanoClock.system());
     }

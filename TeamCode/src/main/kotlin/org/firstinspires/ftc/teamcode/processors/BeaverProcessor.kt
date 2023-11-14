@@ -62,7 +62,7 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
 
     private fun makeGraphicsRect(
         rect: Rect,
-        scaleBmpPxToCanvasPx: Float
+        scaleBmpPxToCanvasPx: Float,
     ): android.graphics.Rect {
         val left = round(rect.x * scaleBmpPxToCanvasPx).toInt()
         val top = round(rect.y * scaleBmpPxToCanvasPx).toInt()
@@ -102,16 +102,19 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
+
             Selected.RIGHT -> {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, selectedPaint)
             }
+
             Selected.CENTER -> {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, selectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
+
             Selected.NONE -> {
                 canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)

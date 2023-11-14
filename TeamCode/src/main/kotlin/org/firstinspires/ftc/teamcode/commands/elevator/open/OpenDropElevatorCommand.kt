@@ -4,7 +4,7 @@ import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.elevator.OpenElevatorSubsystem
 
 class OpenDropElevatorCommand(
-    private val subsystem: OpenElevatorSubsystem
+    private val subsystem: OpenElevatorSubsystem,
 ) : CommandBase() {
     override fun execute() {
         subsystem.spinDown()

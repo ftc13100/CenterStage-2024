@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.commands.elevator.open
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.elevator.OpenElevatorSubsystem
 
-class OpenRaiseElevatorCommand (
+class OpenRaiseElevatorCommand(
     private val subsystem: OpenElevatorSubsystem,
 ) : CommandBase() {
 

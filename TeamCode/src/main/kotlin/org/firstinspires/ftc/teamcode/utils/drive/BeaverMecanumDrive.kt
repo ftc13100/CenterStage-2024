@@ -7,9 +7,24 @@ import com.acmerobotics.roadrunner.followers.TrajectoryFollower
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.arcrobotics.ftclib.command.Subsystem
 import com.qualcomm.hardware.lynx.LynxModule
-import com.qualcomm.robotcore.hardware.*
-import org.firstinspires.ftc.teamcode.constants.ControlBoard.*
-import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.*
+import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.PIDFCoefficients
+import com.qualcomm.robotcore.hardware.VoltageSensor
+import org.firstinspires.ftc.teamcode.constants.ControlBoard.DRIVE_LEFT_FRONT
+import org.firstinspires.ftc.teamcode.constants.ControlBoard.DRIVE_LEFT_REAR
+import org.firstinspires.ftc.teamcode.constants.ControlBoard.DRIVE_RIGHT_FRONT
+import org.firstinspires.ftc.teamcode.constants.ControlBoard.DRIVE_RIGHT_REAR
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_ACCEL
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_ANG_VEL
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MAX_VEL
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.MOTOR_VELO_PID
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.RUN_USING_ENCODER
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.TRACK_WIDTH
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kA
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kStatic
+import org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kV
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive
 import org.firstinspires.ftc.teamcode.roadrunner.drive.StandardTrackingWheelLocalizer
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequenceRunner
@@ -25,16 +40,21 @@ class BeaverMecanumDrive(
     lateralMultiplier = LATERAL_MULTIPLIER
 ), Subsystem {
 
-    private val leftFront: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_LEFT_FRONT.deviceName]
+    private val leftFront: DcMotorEx =
+        hardwareMap[DcMotorEx::class.java, DRIVE_LEFT_FRONT.deviceName]
     private val leftRear: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_LEFT_REAR.deviceName]
-    private val rightFront: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_FRONT.deviceName]
-    private val rightRear: DcMotorEx = hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_REAR.deviceName]
+    private val rightFront: DcMotorEx =
+        hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_FRONT.deviceName]
+    private val rightRear: DcMotorEx =
+        hardwareMap[DcMotorEx::class.java, DRIVE_RIGHT_REAR.deviceName]
 
-    private val motors: List<DcMotorEx>  = listOf<DcMotorEx>(leftFront, leftRear, rightRear, rightFront)
+    private val motors: List<DcMotorEx> =
+        listOf<DcMotorEx>(leftFront, leftRear, rightRear, rightFront)
 
     private var trajectorySequenceRunner: TrajectorySequenceRunner? = null
 
-    private val VEL_CONSTRAINT = SampleMecanumDrive.getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH)
+    private val VEL_CONSTRAINT =
+        SampleMecanumDrive.getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH)
     private val ACCEL_CONSTRAINT = SampleMecanumDrive.getAccelerationConstraint(MAX_ACCEL)
 
     private val batteryVoltageSensor: VoltageSensor
@@ -67,9 +87,16 @@ class BeaverMecanumDrive(
         motors.forEach { it.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE }
 
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
-            motors.forEach { it.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, PIDFCoefficients(
-                MOTOR_VELO_PID.p, MOTOR_VELO_PID.i, MOTOR_VELO_PID.d, MOTOR_VELO_PID.f * 12/(batteryVoltageSensor.voltage))
-            )}
+            motors.forEach {
+                it.setPIDFCoefficients(
+                    DcMotor.RunMode.RUN_USING_ENCODER, PIDFCoefficients(
+                        MOTOR_VELO_PID.p,
+                        MOTOR_VELO_PID.i,
+                        MOTOR_VELO_PID.d,
+                        MOTOR_VELO_PID.f * 12 / (batteryVoltageSensor.voltage)
+                    )
+                )
+            }
         }
         // TODO: reverse any motors using DcMotor.setDirection()
 
@@ -85,7 +112,12 @@ class BeaverMecanumDrive(
         TODO("Not yet implemented")
     }
 
-    override fun setMotorPowers(frontLeft: Double, rearLeft: Double, rearRight: Double, frontRight: Double) {
+    override fun setMotorPowers(
+        frontLeft: Double,
+        rearLeft: Double,
+        rearRight: Double,
+        frontRight: Double,
+    ) {
         TODO("Not yet implemented")
     }
 
