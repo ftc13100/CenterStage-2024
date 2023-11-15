@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.function.Consumer
 import org.firstinspires.ftc.robotcore.external.function.Continuation
 import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource
@@ -17,10 +18,11 @@ import org.opencv.imgproc.Imgproc
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.round
 
-class BeaverProcessor : VisionProcessor, CameraStreamSource {
-    private var rectLeft = Rect(110, 42, 40, 40);
-    private var rectCenter = Rect(160, 42, 40, 40);
-    private var rectRight = Rect(210, 42, 40, 40);
+class BeaverProcessor(
+    private val telemetry: Telemetry
+) : VisionProcessor, CameraStreamSource {
+    private var rectCenter = Rect(80, 180, 150, 160)
+    private var rectRight = Rect(460, 180, 175, 180)
 
     var selection = Selected.NONE
 
@@ -29,25 +31,29 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
 
     private val lastFrame = AtomicReference(Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565))
 
-    override fun init(width: Int, height: Int, calibration: CameraCalibration?) {
+    private val hueThresh = 150.0;
+
+    override fun init(width: Int, height: Int, calibration: CameraCalibration) {
         lastFrame.set(Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565));
     }
 
     override fun processFrame(frame: Mat, captureTimeNanos: Long): Any {
         Imgproc.cvtColor(frame, hsvMat, Imgproc.COLOR_RGB2HSV)
 
-        val satRectLeft = getAvgSaturation(hsvMat, rectLeft)
         val satRectCenter = getAvgSaturation(hsvMat, rectCenter)
         val satRectRight = getAvgSaturation(hsvMat, rectRight)
 
-        selection = when (maxOf(satRectLeft, satRectCenter, satRectRight)) {
+        telemetry.addData("Center Average Saturation", satRectCenter)
+        telemetry.addData("Right Average Saturation", satRectRight)
+
+        selection = when (maxOf(satRectCenter, satRectRight, hueThresh)) {
             satRectCenter -> Selected.CENTER
             satRectRight -> Selected.RIGHT
-            satRectLeft -> Selected.LEFT
-            else -> Selected.RIGHT
+            else -> Selected.LEFT
         }
 
         val b = Bitmap.createBitmap(frame.width(), frame.height(), Bitmap.Config.RGB_565)
+
         Utils.matToBitmap(frame, b)
         lastFrame.set(b)
 
@@ -90,7 +96,6 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
         nonSelectedPaint.style = Paint.Style.STROKE
         nonSelectedPaint.strokeWidth = scaleCanvasDensity * 4
 
-        val drawRectangleLeft = makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx)
         val drawRectangleCenter = makeGraphicsRect(rectCenter, scaleBmpPxToCanvasPx)
         val drawRectangleRight = makeGraphicsRect(rectRight, scaleBmpPxToCanvasPx)
 
@@ -98,25 +103,21 @@ class BeaverProcessor : VisionProcessor, CameraStreamSource {
 
         when (selection) {
             Selected.LEFT -> {
-                canvas.drawRect(drawRectangleLeft, selectedPaint)
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
 
             Selected.RIGHT -> {
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, selectedPaint)
             }
 
             Selected.CENTER -> {
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, selectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
 
             Selected.NONE -> {
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint)
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
