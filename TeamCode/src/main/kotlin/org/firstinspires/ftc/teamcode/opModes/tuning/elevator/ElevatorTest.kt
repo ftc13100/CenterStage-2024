@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.teleOp.tuning.elevator
+package org.firstinspires.ftc.teamcode.opModes.tuning.elevator
 
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand

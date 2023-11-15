@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.teleOp.tuning.elevator
+package org.firstinspires.ftc.teamcode.opModes.tuning.elevator
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
