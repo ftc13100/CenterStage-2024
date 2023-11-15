@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.utils.roadrunner.drive
 
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.acmerobotics.roadrunner.localization.Localizer
-import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.StandardTrackingWheelLocalizer
 
 class AprilTagThreeWheelLocalizer(
     private val odometry: StandardTrackingWheelLocalizer,

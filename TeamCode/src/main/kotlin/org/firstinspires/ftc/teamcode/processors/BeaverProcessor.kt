@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.round
 
 class BeaverProcessor(
-    private val telemetry: Telemetry
+    private val telemetry: Telemetry,
 ) : VisionProcessor, CameraStreamSource {
     private var rectCenter = Rect(80, 180, 150, 160)
     private var rectRight = Rect(460, 180, 175, 180)

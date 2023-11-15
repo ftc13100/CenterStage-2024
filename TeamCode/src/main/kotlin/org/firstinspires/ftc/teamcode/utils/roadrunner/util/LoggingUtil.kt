@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.utils.roadrunner.util
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil
 import java.io.File
-import java.util.Collections
 
 /**
  * Utility functions for log files.

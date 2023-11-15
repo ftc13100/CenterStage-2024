@@ -34,7 +34,13 @@ class DriveToAprilTag : CommandOpMode() {
 
         driver = GamepadEx(gamepad1)
 
-        driveCommand = DriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX, zoneVal = 0.0)
+        driveCommand = DriveCommand(
+            driveSubsystem,
+            driver::getLeftX,
+            driver::getLeftY,
+            driver::getRightX,
+            zoneVal = 0.0
+        )
 
         driveSubsystem.defaultCommand = driveCommand
 
@@ -51,7 +57,8 @@ class DriveToAprilTag : CommandOpMode() {
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
                 InstantCommand({
-                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java).setExposure(2, TimeUnit.MILLISECONDS)
+                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java)
+                        .setExposure(2, TimeUnit.MILLISECONDS)
                     visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 500
                 })
             )
@@ -64,35 +71,35 @@ class DriveToAprilTag : CommandOpMode() {
         schedule(
             RunCommand({
                 for ((_, pose) in visionSubsystem.detectionPoses) {
-                        telemetry.addLine(
-                            String.format(
-                                "XYZ %6.1f %6.1f %6.1f  (inch)",
-                                pose.x,
-                                pose.y,
-                                pose.z
-                            )
+                    telemetry.addLine(
+                        String.format(
+                            "XYZ %6.1f %6.1f %6.1f  (inch)",
+                            pose.x,
+                            pose.y,
+                            pose.z
                         )
-                        telemetry.addLine(
-                            String.format(
-                                "PRY %6.1f %6.1f %6.1f  (deg)",
-                                pose.pitch,
-                                pose.roll,
-                                pose.yaw
-                            )
+                    )
+                    telemetry.addLine(
+                        String.format(
+                            "PRY %6.1f %6.1f %6.1f  (deg)",
+                            pose.pitch,
+                            pose.roll,
+                            pose.yaw
                         )
-                        telemetry.addLine(
-                            String.format(
-                                "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
-                                pose.range,
-                                pose.bearing,
-                                pose.elevation
-                            )
+                    )
+                    telemetry.addLine(
+                        String.format(
+                            "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
+                            pose.range,
+                            pose.bearing,
+                            pose.elevation
                         )
+                    )
                 }
 
                 telemetry.update()
             })
-            .perpetually(),
+                .perpetually(),
             driveCommand
         )
 

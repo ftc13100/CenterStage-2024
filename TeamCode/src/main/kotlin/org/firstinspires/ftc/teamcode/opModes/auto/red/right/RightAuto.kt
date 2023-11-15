@@ -61,6 +61,7 @@ class RightAuto : OpMode() {
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(path)
     }
+
     override fun loop() {
         telemetry.addData("Identified ", beaverProcessor.selection)
 

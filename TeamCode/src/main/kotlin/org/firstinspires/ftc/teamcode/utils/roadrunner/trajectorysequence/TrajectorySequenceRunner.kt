@@ -21,7 +21,7 @@ import java.util.LinkedList
 @Config
 class TrajectorySequenceRunner(
     private val follower: TrajectoryFollower,
-    headingPIDCoefficients: PIDCoefficients
+    headingPIDCoefficients: PIDCoefficients,
 ) {
     private val turnController: PIDFController
     private val clock: NanoClock
@@ -56,7 +56,7 @@ class TrajectorySequenceRunner(
         val packet = TelemetryPacket()
         val fieldOverlay = packet.fieldOverlay()
         var currentSegment: SequenceSegment? = null
-        
+
         if (currentTrajectorySequence != null) {
             if (currentSegmentIndex >= currentTrajectorySequence!!.size()) {
                 for (marker in remainingMarkers) {
@@ -162,7 +162,7 @@ class TrajectorySequenceRunner(
     private fun draw(
         fieldOverlay: Canvas,
         sequence: TrajectorySequence?, currentSegment: SequenceSegment?,
-        targetPose: Pose2d?, poseEstimate: Pose2d
+        targetPose: Pose2d?, poseEstimate: Pose2d,
     ) {
         if (sequence != null) {
             for (i in 0 until sequence.size()) {

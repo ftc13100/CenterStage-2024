@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequence
-import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequenceBuilder
 
 class TrajectoryCommand(
     private val startPose: () -> Pose2d,

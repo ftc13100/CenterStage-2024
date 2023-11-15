@@ -51,7 +51,7 @@ object RegressionUtil {
     fun fitRampData(
         timeSamples: List<Double>, positionSamples: List<Double>,
         powerSamples: List<Double>, fitStatic: Boolean,
-        file: File?
+        file: File?,
     ): RampResult {
         if (file != null) {
             try {
@@ -93,7 +93,7 @@ object RegressionUtil {
     fun fitAccelData(
         timeSamples: List<Double>, positionSamples: List<Double>,
         powerSamples: List<Double>, rampResult: RampResult,
-        file: File?
+        file: File?,
     ): AccelResult {
         if (file != null) {
             try {

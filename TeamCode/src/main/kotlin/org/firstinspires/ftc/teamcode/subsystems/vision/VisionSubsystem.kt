@@ -4,7 +4,6 @@ import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.CameraControl
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
@@ -14,9 +13,9 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
-class VisionSubsystem (
+class VisionSubsystem(
     hardwareMap: HardwareMap,
-    telemetry: Telemetry
+    telemetry: Telemetry,
 ) : SubsystemBase() {
     val portal: VisionPortal
     private val beaverProcessor: BeaverProcessor

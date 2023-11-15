@@ -13,7 +13,7 @@ class TimedAction @JvmOverloads constructor(
     onRun: Runnable,
     onEnd: Runnable,
     milliseconds: Double,
-    symmetric: Boolean = false
+    symmetric: Boolean = false,
 ) {
     private val onRun: Runnable
     private val onEnd: Runnable

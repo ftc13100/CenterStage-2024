@@ -9,7 +9,7 @@ class TurnSegment(
     startPose: Pose2d,
     val totalRotation: Double,
     val motionProfile: MotionProfile,
-    markers: List<TrajectoryMarker>
+    markers: List<TrajectoryMarker>,
 ) : SequenceSegment(
     motionProfile.duration(),
     startPose,

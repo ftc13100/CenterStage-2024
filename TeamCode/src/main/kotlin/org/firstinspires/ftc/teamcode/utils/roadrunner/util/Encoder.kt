@@ -12,7 +12,7 @@ import kotlin.math.sign
  */
 class Encoder @JvmOverloads constructor(
     private val motor: DcMotorEx,
-    private val clock: NanoClock = NanoClock.system()
+    private val clock: NanoClock = NanoClock.system(),
 ) {
     /**
      * Allows you to set the direction of the counts and velocity without modifying the motor's direction state

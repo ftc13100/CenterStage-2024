@@ -5,7 +5,7 @@ import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController
 import com.arcrobotics.ftclib.trajectory.TrapezoidProfile
 
 abstract class ProfiledPIDSubsystem(
-    private val controller: ProfiledPIDController,
+    protected val controller: ProfiledPIDController,
 ) : SubsystemBase() {
     private var enabled: Boolean = true
     private var goal = controller.goal

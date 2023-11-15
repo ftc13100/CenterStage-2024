@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
 
 @Autonomous
-class LeftAutoCommandBased: CommandOpMode() {
+class LeftAutoCommandBased : CommandOpMode() {
     private lateinit var driveSubsystem: DriveSubsystem
     private lateinit var visionSubsystem: VisionSubsystem
 
@@ -28,7 +28,8 @@ class LeftAutoCommandBased: CommandOpMode() {
         trajectory = TrajectoryCommand(
             AutoStartPose.RED_LEFT::startPose,
             driveSubsystem
-        ) { startPose -> driveSubsystem
+        ) { startPose ->
+            driveSubsystem
                 .trajectorySequenceBuilder(startPose)
                 .lineTo(Vector2d(-36.0, -35.0))
                 .apply {
