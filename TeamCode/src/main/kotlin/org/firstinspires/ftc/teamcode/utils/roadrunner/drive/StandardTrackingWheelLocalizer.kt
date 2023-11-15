@@ -6,9 +6,7 @@ import com.acmerobotics.roadrunner.localization.ThreeTrackingWheelLocalizer
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
-import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.DriveConstants.encoderTicksToInches
 import org.firstinspires.ftc.teamcode.utils.roadrunner.util.Encoder
-import java.util.Arrays
 
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:

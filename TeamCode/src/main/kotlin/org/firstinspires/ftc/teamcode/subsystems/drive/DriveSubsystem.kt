@@ -40,7 +40,10 @@ import kotlin.math.abs
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private val fieldCentric: Boolean = false) : MecanumDrive(
+class DriveSubsystem @JvmOverloads constructor(
+    hardwareMap: HardwareMap,
+    private val fieldCentric: Boolean = false,
+) : MecanumDrive(
     DriveConstants.kV,
     DriveConstants.kA,
     DriveConstants.kStatic,
@@ -75,7 +78,8 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         leftFront = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_LEFT_FRONT.deviceName)
         leftRear = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_LEFT_REAR.deviceName)
         rightRear = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_RIGHT_REAR.deviceName)
-        rightFront = hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_RIGHT_FRONT.deviceName)
+        rightFront =
+            hardwareMap.get(DcMotorEx::class.java, ControlBoard.DRIVE_RIGHT_FRONT.deviceName)
         motors = listOf(leftFront, leftRear, rightRear, rightFront)
         for (motor in motors) {
             val motorConfigurationType = motor.motorType.clone()
@@ -103,8 +107,18 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         CommandScheduler.getInstance().registerSubsystem(this)
     }
 
-    @JvmOverloads fun trajectoryBuilder(startPose: Pose2d, reversed: Boolean = false, startHeading: Double = startPose.heading): TrajectoryBuilder {
-        return TrajectoryBuilder(startPose, Angle.norm(startHeading + if (reversed) PI else 0.0), VEL_CONSTRAINT, ACCEL_CONSTRAINT)
+    @JvmOverloads
+    fun trajectoryBuilder(
+        startPose: Pose2d,
+        reversed: Boolean = false,
+        startHeading: Double = startPose.heading,
+    ): TrajectoryBuilder {
+        return TrajectoryBuilder(
+            startPose,
+            Angle.norm(startHeading + if (reversed) PI else 0.0),
+            VEL_CONSTRAINT,
+            ACCEL_CONSTRAINT
+        )
     }
 
     fun drive(leftY: Double, leftX: Double, rightX: Double) {
@@ -241,7 +255,12 @@ class DriveSubsystem @JvmOverloads constructor(hardwareMap: HardwareMap, private
         return wheelVelocities
     }
 
-    override fun setMotorPowers(frontLeft: Double, rearLeft: Double, rearRight: Double, frontRight: Double) {
+    override fun setMotorPowers(
+        frontLeft: Double,
+        rearLeft: Double,
+        rearRight: Double,
+        frontRight: Double,
+    ) {
         leftFront.power = frontLeft
         leftRear.power = rearLeft
         rightRear.power = rearRight

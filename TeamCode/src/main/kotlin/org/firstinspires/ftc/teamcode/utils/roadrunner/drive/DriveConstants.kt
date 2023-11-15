@@ -33,6 +33,7 @@ object DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     const val RUN_USING_ENCODER = false
+
     @JvmField
     var MOTOR_VELO_PID = PIDFCoefficients(
         0.0, 0.0, 0.0,
@@ -49,8 +50,10 @@ object DriveConstants {
      */
     @JvmField
     var WHEEL_RADIUS = 1.8898 // in
+
     @JvmField
     var GEAR_RATIO = 0.5 // output (wheel) speed / input (motor) speed
+
     @JvmField
     var TRACK_WIDTH = 15.75 // in
 
@@ -62,8 +65,10 @@ object DriveConstants {
      */
     @JvmField
     var kV = 0.025
+
     @JvmField
     var kA = 0.005
+
     @JvmField
     var kStatic = 0.01
 
@@ -97,12 +102,16 @@ object DriveConstants {
      */
     @JvmField
     var MAX_VEL = 36.58665032249647
+
     @JvmField
     var MAX_ACCEL = 36.58665032249647
+
     @JvmField
     var MAX_ANG_VEL = Math.toRadians(163.028007)
+
     @JvmField
     var MAX_ANG_ACCEL = Math.toRadians(123.30945)
+
     @JvmStatic
     fun encoderTicksToInches(ticks: Double): Double {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV

@@ -26,6 +26,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 class MaxAngularVeloTuner : LinearOpMode() {
     private var timer: ElapsedTime? = null
     private var maxAngVelocity = 0.0
+
     @Throws(InterruptedException::class)
     override fun runOpMode() {
         val drive = DriveSubsystem(hardwareMap)

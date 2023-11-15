@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.round
 
 class BeaverProcessor(
-    private val telemetry: Telemetry
+    private val telemetry: Telemetry,
 ) : VisionProcessor, CameraStreamSource {
     private var rectCenter = Rect(80, 180, 150, 160)
     private var rectRight = Rect(460, 180, 175, 180)
@@ -68,7 +68,7 @@ class BeaverProcessor(
 
     private fun makeGraphicsRect(
         rect: Rect,
-        scaleBmpPxToCanvasPx: Float
+        scaleBmpPxToCanvasPx: Float,
     ): android.graphics.Rect {
         val left = round(rect.x * scaleBmpPxToCanvasPx).toInt()
         val top = round(rect.y * scaleBmpPxToCanvasPx).toInt()
@@ -106,14 +106,17 @@ class BeaverProcessor(
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
+
             Selected.RIGHT -> {
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, selectedPaint)
             }
+
             Selected.CENTER -> {
                 canvas.drawRect(drawRectangleCenter, selectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
             }
+
             Selected.NONE -> {
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint)
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint)
@@ -122,10 +125,7 @@ class BeaverProcessor(
     }
 
     enum class Selected {
-        LEFT,
-        RIGHT,
-        CENTER,
-        NONE
+        LEFT, RIGHT, CENTER, NONE
     }
 
     override fun getFrameBitmap(continuation: Continuation<out Consumer<Bitmap>>) {

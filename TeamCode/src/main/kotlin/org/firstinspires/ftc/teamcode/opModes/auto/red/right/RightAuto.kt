@@ -61,10 +61,11 @@ class RightAuto : OpMode() {
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(path)
     }
+
     override fun loop() {
         telemetry.addData("Identified ", beaverProcessor.selection)
 
-        for (detection : AprilTagDetection in aprilTag.detections) {
+        for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
                     String.format(

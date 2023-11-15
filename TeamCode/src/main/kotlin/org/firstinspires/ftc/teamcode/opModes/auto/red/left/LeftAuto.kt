@@ -21,7 +21,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous(name = "Left Auto (Red)", group = "Red Auto")
-class LeftAuto: OpMode() {
+class LeftAuto : OpMode() {
     private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
 
@@ -61,6 +61,7 @@ class LeftAuto: OpMode() {
                             )
                         )
                     }
+
                     Selected.CENTER -> {
                         this.lineTo(
                             Vector2d(
@@ -69,6 +70,7 @@ class LeftAuto: OpMode() {
                             )
                         )
                     }
+
                     Selected.RIGHT -> {
                         this.lineToSplineHeading(
                             Pose2d(
@@ -78,6 +80,7 @@ class LeftAuto: OpMode() {
                             )
                         )
                     }
+
                     else -> {
                         this.lineToSplineHeading(
                             Pose2d(
@@ -141,6 +144,7 @@ class LeftAuto: OpMode() {
 
         visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
+
     override fun loop() {
         updateTelemetry()
 
@@ -173,7 +177,7 @@ class LeftAuto: OpMode() {
     private fun updateTelemetry() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 
-        for (detection : AprilTagDetection in aprilTag.detections) {
+        for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
                     String.format(

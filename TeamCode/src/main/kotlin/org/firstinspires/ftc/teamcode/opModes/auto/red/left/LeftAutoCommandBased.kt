@@ -5,7 +5,7 @@ import com.arcrobotics.ftclib.command.FunctionalCommand
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 
-class LeftAutoCommandBased: CommandOpMode() {
+class LeftAutoCommandBased : CommandOpMode() {
     private lateinit var drive: DriveSubsystem
     override fun initialize() {
         drive = DriveSubsystem(hardwareMap)

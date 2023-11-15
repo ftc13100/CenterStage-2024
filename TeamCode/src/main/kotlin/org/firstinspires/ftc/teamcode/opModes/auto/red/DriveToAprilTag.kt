@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.opModes.auto.red
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.RunCommand
-import com.arcrobotics.ftclib.command.StartEndCommand
 import com.arcrobotics.ftclib.command.WaitUntilCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
@@ -36,7 +35,13 @@ class DriveToAprilTag : CommandOpMode() {
 
         driver = GamepadEx(gamepad1)
 
-        driveCommand = DriveCommand(driveSubsystem, driver::getLeftX, driver::getLeftY, driver::getRightX, zoneVal = 0.0)
+        driveCommand = DriveCommand(
+            driveSubsystem,
+            driver::getLeftX,
+            driver::getLeftY,
+            driver::getRightX,
+            zoneVal = 0.0
+        )
 
         driveSubsystem.defaultCommand = driveCommand
         register(driveSubsystem)
@@ -44,7 +49,10 @@ class DriveToAprilTag : CommandOpMode() {
         schedule(
             WaitUntilCommand { portal.cameraState == CameraState.STREAMING }
                 .andThen(
-                    InstantCommand({ portal.getCameraControl(ExposureControl::class.java).setExposure(5, TimeUnit.MILLISECONDS) })
+                    InstantCommand({
+                        portal.getCameraControl(ExposureControl::class.java)
+                            .setExposure(5, TimeUnit.MILLISECONDS)
+                    })
                 )
         )
 

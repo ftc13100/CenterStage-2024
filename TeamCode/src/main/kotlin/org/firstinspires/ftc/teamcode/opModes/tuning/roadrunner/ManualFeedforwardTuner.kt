@@ -80,7 +80,8 @@ class ManualFeedforwardTuner : LinearOpMode() {
                     }
 
                     val motionState = activeProfile[profileTime]
-                    val targetPower = calculateMotorFeedforward(motionState.v, motionState.a, kV, kA, kStatic)
+                    val targetPower =
+                        calculateMotorFeedforward(motionState.v, motionState.a, kV, kA, kStatic)
 
                     drive.setDrivePower(Pose2d(targetPower, 0.0, 0.0))
                     drive.updatePoseEstimate()

@@ -20,7 +20,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous(name = "Right Auto (Blue)", group = "Blue Auto")
-class RightAuto: OpMode() {
+class RightAuto : OpMode() {
     private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
 
@@ -37,7 +37,7 @@ class RightAuto: OpMode() {
     override fun init() {
         initVisionPortal()
 
-        drive = DriveSubsystem(hardwareMap,)
+        drive = DriveSubsystem(hardwareMap)
 
         FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
@@ -75,10 +75,11 @@ class RightAuto: OpMode() {
 
 //        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
+
     override fun loop() {
         telemetry.addData("Identified: ", beaverProcessor.selection)
 
-        for (detection : AprilTagDetection in aprilTag.detections) {
+        for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
                     String.format(
