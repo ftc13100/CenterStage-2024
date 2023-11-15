@@ -24,6 +24,6 @@ class ProfiledElevatorSubsystem(
     override fun useOutput(output: Double, setpoint: TrapezoidProfile.State) =
         elevatorMotors.set(output)
 
-    override fun getMeasurement(): Double = elevatorMotors.currentPosition.toDouble()
+    override fun getMeasurement(): Double = elevatorMotors.positions[0]
 
 }

@@ -33,7 +33,7 @@ class ElevatorSubsystem(
         elevatorMotors.set(output)
     }
 
-    override fun getMeasurement(): Double = elevatorMotors.currentPosition.toDouble()
+    override fun getMeasurement(): Double = elevatorMotors.positions[0]
 
     fun flipOuttake() =
         if (flipped) elevatorServos.position = 0.0 else elevatorServos.position = 0.0

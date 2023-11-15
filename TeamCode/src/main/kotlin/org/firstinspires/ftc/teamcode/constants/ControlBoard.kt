@@ -18,6 +18,8 @@ enum class ControlBoard(val deviceName: String) {
     SERVO_ELEVATOR_LEFT("leftElevatorServo"),
     SERVO_ELEVATOR_RIGHT("rightElevatorServo"),
 
+    LIMIT_SWITCH("limit"),
+
     // Odometry
     ODO_LEFT_ENCODER("rightFront"),
     ODO_RIGHT_ENCODER("leftFront"),

@@ -9,18 +9,24 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.utils.ServoGroup
 
 class OpenElevatorSubsystem(
-    motorLeft: Motor,
-    motorRight: Motor,
+    leftMotor: Motor,
+    rightMotor: Motor,
     private val limit: TouchSensor,
     val telemetry: Telemetry,
-    servoLeft: Servo,
-    servoRight: Servo,
+    leftServo: Servo,
+    rightServo: Servo,
 ) : SubsystemBase() {
-    private val elevatorServos = ServoGroup(servoLeft, servoRight)
+    private val elevatorServos = ServoGroup(leftServo, rightServo)
 
-    private val elevatorMotors = MotorGroup(motorLeft, motorRight)
+    private val elevatorMotors = MotorGroup(leftMotor, rightMotor)
 
-    val flipped
+    val currentPos: Double
+        get() = elevatorMotors.positions[0]
+
+    val currentVel: Double
+        get() = elevatorMotors.velocities[0]
+
+    val flipped: Boolean
         get() = elevatorServos.position == 1.0
 
 
@@ -32,13 +38,9 @@ class OpenElevatorSubsystem(
 
     fun spinUp() {
         elevatorMotors.set(1.0)
-        val current = elevatorMotors.currentPosition
-        telemetry.addData("Position", current)
-        telemetry.update()
-
     }
 
-    fun getPosition(): Double = elevatorMotors.currentPosition.toDouble()
+    fun setPower(power: Double) = elevatorMotors.set(power)
 
     fun spinDown() {
         if (!isPressed()) {
