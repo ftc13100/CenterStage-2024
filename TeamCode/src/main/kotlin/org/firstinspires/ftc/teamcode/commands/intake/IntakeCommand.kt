@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSubsystem
 
 class IntakeCommand(
     private val subsystem: IntakeSubsystem,
-    private val intake: Boolean
+    private val intake: Boolean,
 ) : CommandBase() {
     override fun execute() = if (intake) {
         subsystem.intake()

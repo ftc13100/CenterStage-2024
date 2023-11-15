@@ -24,7 +24,7 @@ abstract class PIDSubsystem(
     }
 
     fun enable() {
-        enabled  = true
+        enabled = true
         controller.reset()
     }
 
