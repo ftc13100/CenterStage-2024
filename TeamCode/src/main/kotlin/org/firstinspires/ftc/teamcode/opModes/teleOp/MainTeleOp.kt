@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
+import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
 import org.firstinspires.ftc.teamcode.commands.intake.IntakeCommand
@@ -41,6 +42,8 @@ class MainTeleOp : CommandOpMode() {
             rightX = driver::getRightX,
             zoneVal = 0.15
         )
+
+        hardwareMap.getAll(LynxModule::class.java).forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.AUTO }
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)
