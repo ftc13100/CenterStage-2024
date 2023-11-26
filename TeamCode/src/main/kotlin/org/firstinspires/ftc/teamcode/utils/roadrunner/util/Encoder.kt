@@ -14,12 +14,8 @@ class Encoder @JvmOverloads constructor(
     private val motor: DcMotorEx,
     private val clock: NanoClock = NanoClock.system(),
 ) {
-    /**
-     * Allows you to set the direction of the counts and velocity without modifying the motor's direction state
-     *
-     * @param direction either reverse or forward depending on if encoder counts should be negated
-     */
-    private var direction: Direction
+
+    var direction: Direction
     private var lastPosition = 0
     private var velocityEstimate = 0.0
     private var lastUpdateTime: Double
@@ -56,7 +52,6 @@ class Encoder @JvmOverloads constructor(
 
     enum class Direction(val multiplier: Int) {
         FORWARD(1), REVERSE(-1)
-
     }
 
     companion object {

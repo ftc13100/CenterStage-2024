@@ -49,6 +49,8 @@ class StandardTrackingWheelLocalizer(hardwareMap: HardwareMap) : ThreeTrackingWh
                 DcMotorEx::class.java, ControlBoard.ODO_STRAFE_ENCODER.deviceName
             )
         )
+
+        leftEncoder.direction = Encoder.Direction.REVERSE
     }
 
     override fun getWheelPositions() = listOf(
@@ -64,13 +66,14 @@ class StandardTrackingWheelLocalizer(hardwareMap: HardwareMap) : ThreeTrackingWh
     )
 
     companion object {
-        val TICKS_PER_REV = 8192.0
-        val WHEEL_RADIUS = 0.74803 // in
-        val GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
+        private const val TICKS_PER_REV = 8192.0
+        private const val WHEEL_RADIUS = 0.74803 // in
+        private const val GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
 
         @JvmField
         var LATERAL_DISTANCE = 15.48986087647907 // in; distance between the left and right wheels
 
+        //TODO: Retune because crossbar was shifted forward
         @JvmField
         var FORWARD_OFFSET = 0.0 // in; offset of the lateral wheel
 
