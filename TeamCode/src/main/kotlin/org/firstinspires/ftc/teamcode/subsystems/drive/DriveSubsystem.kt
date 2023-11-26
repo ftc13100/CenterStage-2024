@@ -347,12 +347,15 @@ class DriveSubsystem @JvmOverloads constructor(
         @JvmField
         var DESIRED_TAG_DISTANCE = 12.0
 
-        var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
-        var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
+        var TRANSLATIONAL_PID = PIDCoefficients(0.0, 0.0, 0.0)
+        var HEADING_PID = PIDCoefficients(0.0, 0.0, 0.0)
+
         var LATERAL_MULTIPLIER = 1.0
+
         var VX_WEIGHT = 1.0
         var VY_WEIGHT = 1.0
         var OMEGA_WEIGHT = 1.0
+
         private val VEL_CONSTRAINT = getVelocityConstraint(
             DriveConstants.MAX_VEL,
             DriveConstants.MAX_ANG_VEL,
