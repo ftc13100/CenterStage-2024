@@ -6,7 +6,6 @@ import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.PerpetualCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
-import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.commands.drive.TrajectoryCommand
 import org.firstinspires.ftc.teamcode.constants.AutoStartPose
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor.Selected
@@ -88,15 +87,7 @@ class LeftAutoCommandBased : CommandOpMode() {
                 trajectory
             )
             .andThen(
-                DriveToTagCommand(5, driveSubsystem, visionSubsystem) {
-                    visionSubsystem.targetPose?.let {
-                        Pose2d(
-                            it.range,
-                            it.yaw,
-                            it.bearing
-                        )
-                    }
-                }
+
             )
             .andThen(
 

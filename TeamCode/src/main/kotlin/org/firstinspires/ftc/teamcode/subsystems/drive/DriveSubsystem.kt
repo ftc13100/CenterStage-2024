@@ -60,7 +60,7 @@ class DriveSubsystem @JvmOverloads constructor(
     private val motors: List<DcMotorEx>
     private val batteryVoltageSensor: VoltageSensor
 
-    var m_name = this.javaClass.simpleName
+    var m_name: String = this.javaClass.simpleName
 
     private val lateralController = PIDFController(
         lateralPIDFCoefficients.p,

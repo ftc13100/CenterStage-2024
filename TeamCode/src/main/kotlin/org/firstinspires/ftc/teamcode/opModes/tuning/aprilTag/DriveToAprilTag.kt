@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.tuning.aprilTag
 
 import com.acmerobotics.dashboard.config.Config
-import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.RunCommand
@@ -12,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
-import org.firstinspires.ftc.teamcode.commands.drive.DriveToTagCommand
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
 import org.firstinspires.ftc.vision.VisionPortal.CameraState
@@ -25,7 +23,6 @@ class DriveToAprilTag : CommandOpMode() {
     private lateinit var visionSubsystem: VisionSubsystem
 
     private lateinit var driveCommand: DriveCommand
-    private lateinit var driveToTagCommand: DriveToTagCommand
 
     private lateinit var driver: GamepadEx
     override fun initialize() {
@@ -43,16 +40,6 @@ class DriveToAprilTag : CommandOpMode() {
         )
 
         driveSubsystem.defaultCommand = driveCommand
-
-        driveToTagCommand = DriveToTagCommand(targetId, driveSubsystem, visionSubsystem) {
-            visionSubsystem.targetPose?.let {
-                Pose2d(
-                    it.range,
-                    it.yaw,
-                    it.bearing
-                )
-            }
-        }
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }
             .andThen(
@@ -103,7 +90,6 @@ class DriveToAprilTag : CommandOpMode() {
             driveCommand
         )
 
-        driver.getGamepadButton(GamepadKeys.Button.A).whileHeld(driveToTagCommand)
     }
 
     companion object {
