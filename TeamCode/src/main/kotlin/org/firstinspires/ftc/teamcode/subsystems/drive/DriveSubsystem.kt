@@ -83,8 +83,11 @@ class DriveSubsystem @JvmOverloads constructor(
 
     init {
         val follower: TrajectoryFollower = HolonomicPIDVAFollower(
-            TRANSLATIONAL_PID, TRANSLATIONAL_PID, HEADING_PID,
-            Pose2d(0.5, 0.5, Math.toRadians(5.0)), 0.5
+            TRANSLATIONAL_PID,
+            TRANSLATIONAL_PID,
+            HEADING_PID,
+            Pose2d(0.5, 0.5, Math.toRadians(5.0)),
+            0.5
         )
 
         LynxModuleUtil.ensureMinimumFirmwareVersion(hardwareMap)
@@ -156,8 +159,7 @@ class DriveSubsystem @JvmOverloads constructor(
         val (_, _, heading) = poseEstimate
 
         val (x, y) = Vector2d(
-            -leftY,
-            -leftX
+            -leftY, -leftX
         ).rotated(
             if (fieldCentric) -heading else 0.0
         )
@@ -168,16 +170,16 @@ class DriveSubsystem @JvmOverloads constructor(
     fun trajectorySequenceBuilder(startPose: Pose2d): TrajectorySequenceBuilder {
         return TrajectorySequenceBuilder(
             startPose,
-            VEL_CONSTRAINT, ACCEL_CONSTRAINT,
-            DriveConstants.MAX_ANG_VEL, DriveConstants.MAX_ANG_ACCEL
+            VEL_CONSTRAINT,
+            ACCEL_CONSTRAINT,
+            DriveConstants.MAX_ANG_VEL,
+            DriveConstants.MAX_ANG_ACCEL
         )
     }
 
     fun turnAsync(angle: Double) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
-            trajectorySequenceBuilder(poseEstimate)
-                .turn(angle)
-                .build()
+            trajectorySequenceBuilder(poseEstimate).turn(angle).build()
         )
     }
 
@@ -188,9 +190,7 @@ class DriveSubsystem @JvmOverloads constructor(
 
     fun followTrajectoryAsync(trajectory: Trajectory) {
         trajectorySequenceRunner.followTrajectorySequenceAsync(
-            trajectorySequenceBuilder(trajectory.start())
-                .addTrajectory(trajectory)
-                .build()
+            trajectorySequenceBuilder(trajectory.start()).addTrajectory(trajectory).build()
         )
     }
 
@@ -239,7 +239,9 @@ class DriveSubsystem @JvmOverloads constructor(
 
     fun setPIDFCoefficients(runMode: DcMotor.RunMode, coefficients: PIDFCoefficients) {
         val compensatedCoefficients = PIDFCoefficients(
-            coefficients.p, coefficients.i, coefficients.d,
+            coefficients.p,
+            coefficients.i,
+            coefficients.d,
             coefficients.f * 12 / batteryVoltageSensor.voltage
         )
         for (motor in motors) {
@@ -249,9 +251,7 @@ class DriveSubsystem @JvmOverloads constructor(
 
     fun setWeightedDrivePower(drivePower: Pose2d) {
         var vel = drivePower
-        if ((abs(drivePower.x) + abs(drivePower.y)
-                    + abs(drivePower.heading)) > 1
-        ) {
+        if ((abs(drivePower.x) + abs(drivePower.y) + abs(drivePower.heading)) > 1) {
             // re-normalize the powers according to the weights
             val denom =
                 VX_WEIGHT * abs(drivePower.x) + VY_WEIGHT * abs(drivePower.y) + OMEGA_WEIGHT * abs(
@@ -357,9 +357,7 @@ class DriveSubsystem @JvmOverloads constructor(
         var OMEGA_WEIGHT = 1.0
 
         private val VEL_CONSTRAINT = getVelocityConstraint(
-            DriveConstants.MAX_VEL,
-            DriveConstants.MAX_ANG_VEL,
-            DriveConstants.TRACK_WIDTH
+            DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH
         )
         private val ACCEL_CONSTRAINT = getAccelerationConstraint(DriveConstants.MAX_ACCEL)
         fun getVelocityConstraint(

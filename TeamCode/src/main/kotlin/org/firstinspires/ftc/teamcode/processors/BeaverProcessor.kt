@@ -125,10 +125,7 @@ class BeaverProcessor(
     }
 
     enum class Selected {
-        LEFT,
-        RIGHT,
-        CENTER,
-        NONE
+        LEFT, RIGHT, CENTER, NONE
     }
 
     override fun getFrameBitmap(continuation: Continuation<out Consumer<Bitmap>>) {

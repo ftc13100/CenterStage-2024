@@ -25,7 +25,6 @@ import kotlin.Metadata;
 )
 public final class BeaverProcessorJava implements VisionProcessor {
     private final Mat hsvMat = new Mat();
-    public Rect rectLeft = new Rect(25, 110, 40, 40);
     public Rect rectCenter = new Rect(150, 110, 40, 40);
     public Rect rectRight = new Rect(275, 110, 40, 40);
     Selected selection = Selected.NONE;
@@ -46,11 +45,10 @@ public final class BeaverProcessorJava implements VisionProcessor {
 
     public Object processFrame(Mat frame, long captureTimeNanos) {
         Imgproc.cvtColor(frame, this.hsvMat, 41);
-        double satRectLeft = this.getAvgSaturation(this.hsvMat, this.rectLeft);
         double satRectCenter = this.getAvgSaturation(this.hsvMat, this.rectCenter);
         double satRectRight = this.getAvgSaturation(this.hsvMat, this.rectRight);
-        double var10 = Math.max(satRectLeft, Math.max(satRectCenter, satRectRight));
-        this.selection = var10 == satRectCenter ? BeaverProcessorJava.Selected.CENTER : (var10 == satRectRight ? BeaverProcessorJava.Selected.RIGHT : (var10 == satRectLeft ? BeaverProcessorJava.Selected.LEFT : BeaverProcessorJava.Selected.RIGHT));
+        double var10 = Math.max(satRectCenter, satRectRight);
+        this.selection = var10 == satRectCenter ? BeaverProcessorJava.Selected.CENTER : (var10 == satRectRight ? BeaverProcessorJava.Selected.RIGHT : BeaverProcessorJava.Selected.LEFT);
         telemetry.addData("Identified", selection);
         telemetry.update();
         return this.selection;
@@ -85,34 +83,24 @@ public final class BeaverProcessorJava implements VisionProcessor {
         nonSelectedPaint.setStyle(Paint.Style.STROKE);
         nonSelectedPaint.setStrokeWidth(scaleCanvasDensity * 4);
 
-        android.graphics.Rect drawRectangleLeft = makeGraphicsRect(rectLeft, scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleCenter = makeGraphicsRect(rectCenter, scaleBmpPxToCanvasPx);
         android.graphics.Rect drawRectangleRight = makeGraphicsRect(rectRight, scaleBmpPxToCanvasPx);
 
         selection = (Selected) userContext;
 
         switch (selection) {
-            case LEFT:
-                canvas.drawRect(drawRectangleLeft, selectedPaint);
+            case LEFT, NONE:
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
 
             case RIGHT:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleCenter, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, selectedPaint);
                 break;
 
             case CENTER:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
                 canvas.drawRect(drawRectangleCenter, selectedPaint);
-                canvas.drawRect(drawRectangleRight, nonSelectedPaint);
-                break;
-
-            case NONE:
-                canvas.drawRect(drawRectangleLeft, nonSelectedPaint);
-                canvas.drawRect(drawRectangleCenter, nonSelectedPaint);
                 canvas.drawRect(drawRectangleRight, nonSelectedPaint);
                 break;
         }
