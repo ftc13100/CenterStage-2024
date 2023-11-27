@@ -40,7 +40,6 @@ import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.DriveConstants
  * user to reset the position of the bot in the event that it drifts off the path.
  * Pressing B/O (Xbox/PS4) will cede control back to the tuning process.
  */
-@Disabled
 @Config
 @Autonomous(group = "drive")
 class DriveVelocityPIDTuner : LinearOpMode() {
@@ -139,6 +138,7 @@ class DriveVelocityPIDTuner : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var DISTANCE = 72.0 // in
         private fun generateProfile(movingForward: Boolean): MotionProfile {
             val start = MotionState(if (movingForward) 0.0 else DISTANCE, 0.0, 0.0, 0.0)

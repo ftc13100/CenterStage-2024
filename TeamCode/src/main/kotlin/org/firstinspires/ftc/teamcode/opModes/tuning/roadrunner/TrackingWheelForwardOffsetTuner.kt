@@ -34,7 +34,7 @@ import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.StandardTrackingWhe
  * for the forward offset. You can run this procedure as many times as necessary until a
  * satisfactory result is produced.
  */
-@Disabled
+
 @Config
 @Autonomous(group = "drive")
 class TrackingWheelForwardOffsetTuner : LinearOpMode() {
@@ -92,8 +92,13 @@ class TrackingWheelForwardOffsetTuner : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var ANGLE = 180.0 // deg
+
+        @JvmField
         var NUM_TRIALS = 5
+
+        @JvmField
         var DELAY = 1000 // ms
     }
 }

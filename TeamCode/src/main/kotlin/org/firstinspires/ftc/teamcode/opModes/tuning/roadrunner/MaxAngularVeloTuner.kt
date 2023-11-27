@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
  *
  * Further fine tuning of MAX_ANG_VEL may be desired.
  */
-@Disabled
 @Config
 @Autonomous(group = "drive")
 class MaxAngularVeloTuner : LinearOpMode() {
@@ -65,6 +64,7 @@ class MaxAngularVeloTuner : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var RUNTIME = 4.0
     }
 }

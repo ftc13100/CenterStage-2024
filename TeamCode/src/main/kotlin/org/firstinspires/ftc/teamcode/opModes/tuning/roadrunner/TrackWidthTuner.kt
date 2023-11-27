@@ -74,8 +74,13 @@ class TrackWidthTuner : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var ANGLE = 180.0 // deg
+
+        @JvmField
         var NUM_TRIALS = 5
+
+        @JvmField
         var DELAY = 1000 // ms
     }
 }

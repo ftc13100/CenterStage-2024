@@ -30,7 +30,6 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
  * \________/
  *
  */
-@Disabled
 @Config
 @TeleOp(group = "drive")
 class MotorDirectionDebugger : LinearOpMode() {
@@ -74,6 +73,7 @@ class MotorDirectionDebugger : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var MOTOR_POWER = 0.7
     }
 }

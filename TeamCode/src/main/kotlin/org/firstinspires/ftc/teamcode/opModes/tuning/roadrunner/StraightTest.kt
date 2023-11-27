@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 /*
  * This is a simple routine to test translational drive capabilities.
  */
-@Disabled
 @Config
 @Autonomous(group = "drive")
 class StraightTest : LinearOpMode() {
@@ -35,6 +34,7 @@ class StraightTest : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var DISTANCE = 60.0 // in
     }
 }

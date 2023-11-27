@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.tuning.roadrunner
 
 import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -23,7 +24,7 @@ import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.DriveConstants.getM
  *
  * Further fine tuning of kF may be desired.
  */
-@Disabled //@Config
+@Config
 @Autonomous(group = "drive")
 class MaxVelocityTuner : LinearOpMode() {
     private lateinit var timer: ElapsedTime
@@ -82,6 +83,7 @@ class MaxVelocityTuner : LinearOpMode() {
     }
 
     companion object {
+        @JvmField
         var RUNTIME = 2.0
     }
 }
