@@ -11,9 +11,14 @@ import org.firstinspires.ftc.teamcode.constants.AutoStartPose
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor.Selected
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Autonomous
-class LeftAutoCommandBased : CommandOpMode() {
+class LeftAutoCommandBased: CommandOpMode() {
+    private val CAMERA_X = 8.5
+    private val CAMERA_Y = 4.5
+
     private lateinit var driveSubsystem: DriveSubsystem
     private lateinit var visionSubsystem: VisionSubsystem
 
@@ -87,7 +92,24 @@ class LeftAutoCommandBased : CommandOpMode() {
                 trajectory
             )
             .andThen(
+                TrajectoryCommand(
+                    driveSubsystem::poseEstimate,
+                    driveSubsystem
+                ) {
+                    val detectionPose = visionSubsystem.targetPose
+                        ?: return@TrajectoryCommand driveSubsystem.trajectorySequenceBuilder(it).waitSeconds(0.0).build()
 
+                    return@TrajectoryCommand driveSubsystem
+                        .trajectorySequenceBuilder(it)
+                        .lineToSplineHeading(
+                            Pose2d(
+                                it.x - CAMERA_X - DriveSubsystem.DESIRED_TAG_DISTANCE * sin(detectionPose.yaw),
+                                it.y + CAMERA_Y + DriveSubsystem.DESIRED_TAG_DISTANCE * cos(detectionPose.yaw),
+                                Math.toRadians(180.0) + detectionPose.yaw
+                            )
+                        )
+                        .build()
+                }
             )
             .andThen(
 

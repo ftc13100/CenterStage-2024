@@ -18,7 +18,6 @@ import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityCons
 import com.acmerobotics.roadrunner.util.Angle
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.command.Subsystem
-import com.arcrobotics.ftclib.controller.PIDFController
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -61,25 +60,6 @@ class DriveSubsystem @JvmOverloads constructor(
     private val batteryVoltageSensor: VoltageSensor
 
     var m_name: String = this.javaClass.simpleName
-
-    private val lateralController = PIDFController(
-        lateralPIDFCoefficients.p,
-        lateralPIDFCoefficients.i,
-        lateralPIDFCoefficients.d,
-        lateralPIDFCoefficients.f
-    )
-    private val parallelController = PIDFController(
-        parallelPIDFCoefficients.p,
-        parallelPIDFCoefficients.i,
-        parallelPIDFCoefficients.d,
-        parallelPIDFCoefficients.f
-    )
-    private val headingController = PIDFController(
-        headingPIDFCoefficients.p,
-        headingPIDFCoefficients.i,
-        headingPIDFCoefficients.d,
-        headingPIDFCoefficients.f
-    )
 
     init {
         val follower: TrajectoryFollower = HolonomicPIDVAFollower(
@@ -128,10 +108,6 @@ class DriveSubsystem @JvmOverloads constructor(
         localizer = StandardTrackingWheelLocalizer(hardwareMap)
 
         trajectorySequenceRunner = TrajectorySequenceRunner(follower, HEADING_PID)
-
-        lateralController.setPoint = DESIRED_TAG_DISTANCE
-        headingController.setPoint = Math.toRadians(180.0)
-        parallelController.setPoint = 0.0
 
         CommandScheduler.getInstance().registerSubsystem(this)
     }
@@ -261,7 +237,7 @@ class DriveSubsystem @JvmOverloads constructor(
                 VX_WEIGHT * drivePower.x,
                 VY_WEIGHT * drivePower.y,
                 OMEGA_WEIGHT * drivePower.heading
-            ).div(denom)
+            ) / denom
         }
         setDrivePower(vel)
     }
@@ -295,55 +271,12 @@ class DriveSubsystem @JvmOverloads constructor(
         rightFront.power = frontRight
     }
 
-    fun driveToTag(error: Pose2d?): Boolean {
-        if (error == null) {
-            drive(0.0, 0.0, 0.0)
-            return false
-        }
-
-        lateralController.setPIDF(
-            lateralPIDFCoefficients.p,
-            lateralPIDFCoefficients.i,
-            lateralPIDFCoefficients.d,
-            lateralPIDFCoefficients.f
-        )
-        headingController.setPIDF(
-            headingPIDFCoefficients.p,
-            headingPIDFCoefficients.i,
-            headingPIDFCoefficients.d,
-            lateralPIDFCoefficients.f
-        )
-        parallelController.setPIDF(
-            parallelPIDFCoefficients.p,
-            parallelPIDFCoefficients.i,
-            parallelPIDFCoefficients.d,
-            lateralPIDFCoefficients.f
-        )
-
-        val lateralError = lateralController.calculate(error.x)
-        val parallelError = parallelController.calculate(error.y)
-        val headingError = headingController.calculate(error.heading)
-
-        drive(lateralError, parallelError, headingError)
-
-        return lateralController.atSetPoint() && parallelController.atSetPoint() && headingController.atSetPoint()
-    }
-
     override val rawExternalHeading: Double
         get() = 0.0
 
     override fun getExternalHeadingVelocity() = 0.0
 
     companion object {
-        @JvmField
-        var headingPIDFCoefficients = PIDFCoefficients()
-
-        @JvmField
-        var lateralPIDFCoefficients = PIDFCoefficients()
-
-        @JvmField
-        var parallelPIDFCoefficients = PIDFCoefficients()
-
         @JvmField
         var DESIRED_TAG_DISTANCE = 12.0
 
