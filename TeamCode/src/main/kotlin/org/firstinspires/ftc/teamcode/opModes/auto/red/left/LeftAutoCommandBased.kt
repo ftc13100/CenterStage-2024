@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.command.PerpetualCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.commands.drive.TrajectoryCommand
 import org.firstinspires.ftc.teamcode.constants.AutoStartPose
+import org.firstinspires.ftc.teamcode.constants.CameraConstants
 import org.firstinspires.ftc.teamcode.processors.BeaverProcessor.Selected
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.vision.VisionSubsystem
@@ -15,10 +16,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 @Autonomous
-class LeftAutoCommandBased: CommandOpMode() {
-    private val CAMERA_X = 8.5
-    private val CAMERA_Y = 4.5
-
+class LeftAutoCommandBased : CommandOpMode() {
     private lateinit var driveSubsystem: DriveSubsystem
     private lateinit var visionSubsystem: VisionSubsystem
 
@@ -97,14 +95,19 @@ class LeftAutoCommandBased: CommandOpMode() {
                     driveSubsystem
                 ) {
                     val detectionPose = visionSubsystem.targetPose
-                        ?: return@TrajectoryCommand driveSubsystem.trajectorySequenceBuilder(it).waitSeconds(0.0).build()
+                        ?: return@TrajectoryCommand driveSubsystem.trajectorySequenceBuilder(it)
+                            .waitSeconds(0.0).build()
 
                     return@TrajectoryCommand driveSubsystem
                         .trajectorySequenceBuilder(it)
                         .lineToSplineHeading(
                             Pose2d(
-                                it.x - CAMERA_X - DriveSubsystem.DESIRED_TAG_DISTANCE * sin(detectionPose.yaw),
-                                it.y + CAMERA_Y + DriveSubsystem.DESIRED_TAG_DISTANCE * cos(detectionPose.yaw),
+                                it.x - CameraConstants.CAMERA_X.value - DriveSubsystem.DESIRED_TAG_DISTANCE * sin(
+                                    detectionPose.yaw
+                                ),
+                                it.y + CameraConstants.CAMERA_Y.value + DriveSubsystem.DESIRED_TAG_DISTANCE * cos(
+                                    detectionPose.yaw
+                                ),
                                 Math.toRadians(180.0) + detectionPose.yaw
                             )
                         )

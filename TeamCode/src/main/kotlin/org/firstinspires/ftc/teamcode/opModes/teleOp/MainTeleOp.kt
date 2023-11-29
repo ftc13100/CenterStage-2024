@@ -42,7 +42,8 @@ class MainTeleOp : CommandOpMode() {
             rightX = driver::getRightX,
             zoneVal = 0.15
         )
-        hardwareMap.getAll(LynxModule::class.java).forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.AUTO }
+        hardwareMap.getAll(LynxModule::class.java)
+            .forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.AUTO }
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)

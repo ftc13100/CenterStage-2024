@@ -42,12 +42,12 @@ class DriveToAprilTag : CommandOpMode() {
         driveSubsystem.defaultCommand = driveCommand
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }.andThen(
-                InstantCommand({
-                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java)
-                        .setExposure(2, TimeUnit.MILLISECONDS)
-                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 500
-                })
-            )
+            InstantCommand({
+                visionSubsystem.portal.getCameraControl(ExposureControl::class.java)
+                    .setExposure(2, TimeUnit.MILLISECONDS)
+                visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 500
+            })
+        )
 
         driveToTagCommand = TrajectoryCommand(
             driveSubsystem::poseEstimate, driveSubsystem
@@ -71,12 +71,12 @@ class DriveToAprilTag : CommandOpMode() {
         }
 
         WaitUntilCommand { visionSubsystem.cameraState == CameraState.STREAMING }.andThen(
-                InstantCommand({
-                    visionSubsystem.portal.getCameraControl(ExposureControl::class.java)
-                        .setExposure(6, TimeUnit.MILLISECONDS)
-                    visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 250
-                })
-            ).schedule()
+            InstantCommand({
+                visionSubsystem.portal.getCameraControl(ExposureControl::class.java)
+                    .setExposure(6, TimeUnit.MILLISECONDS)
+                visionSubsystem.portal.getCameraControl(GainControl::class.java).gain = 250
+            })
+        ).schedule()
 
         RunCommand({ visionSubsystem.targetId = targetId }).perpetually().schedule()
 
