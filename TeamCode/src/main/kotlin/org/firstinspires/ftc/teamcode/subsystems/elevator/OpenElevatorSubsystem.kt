@@ -31,20 +31,22 @@ class OpenElevatorSubsystem(
 
 
     init {
+        rightMotor.inverted = true
+        
         elevatorMotors.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
         elevatorMotors.resetEncoder()
 //        ElevatorMotor.inverted = true
     }
 
     fun spinUp() {
-        elevatorMotors.set(1.0)
+        elevatorMotors.set(0.2)
     }
 
     fun setPower(power: Double) = elevatorMotors.set(power)
 
     fun spinDown() {
         if (!isPressed()) {
-            elevatorMotors.set(-1.0)
+            elevatorMotors.set(-0.2)
         }
     }
 

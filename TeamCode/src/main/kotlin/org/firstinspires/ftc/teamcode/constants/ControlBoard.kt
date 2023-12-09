@@ -12,7 +12,7 @@ enum class ControlBoard(val deviceName: String) {
     INTAKE("intake"),
 
     // Elevator
-    ELEVATOR_LEFT("elevatorLeft"),
+     ELEVATOR_LEFT("elevatorLeft"),
     ELEVATOR_RIGHT("elevatorRight"),
 
     SERVO_ELEVATOR_LEFT("leftElevatorServo"),
