@@ -39,14 +39,15 @@ class OpenElevatorSubsystem(
     }
 
     fun spinUp() {
-        elevatorMotors.set(0.2)
+        elevatorMotors.set(0.6)
+
     }
 
     fun setPower(power: Double) = elevatorMotors.set(power)
 
     fun spinDown() {
         if (!isPressed()) {
-            elevatorMotors.set(-0.2)
+            elevatorMotors.set(-0.6)
         }
     }
 

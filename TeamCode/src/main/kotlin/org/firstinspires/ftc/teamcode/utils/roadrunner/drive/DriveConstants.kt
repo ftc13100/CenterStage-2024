@@ -55,7 +55,7 @@ object DriveConstants {
     var GEAR_RATIO = 0.5 // output (wheel) speed / input (motor) speed
 
     @JvmField
-    var TRACK_WIDTH = 15.75 // in
+    var TRACK_WIDTH = 17.0 // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -64,7 +64,7 @@ object DriveConstants {
      * empirically tuned.
      */
     @JvmField
-    var kV = 0.025
+    var kV = 0.0265
 
     @JvmField
     var kA = 0.005

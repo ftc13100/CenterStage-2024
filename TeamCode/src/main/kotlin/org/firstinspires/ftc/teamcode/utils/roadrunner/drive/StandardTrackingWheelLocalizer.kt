@@ -50,7 +50,7 @@ class StandardTrackingWheelLocalizer(hardwareMap: HardwareMap) : ThreeTrackingWh
             )
         )
 
-        leftEncoder.direction = Encoder.Direction.REVERSE
+//        leftEncoder.direction = Encoder.Direction.REVERSE
     }
 
     override fun getWheelPositions() = listOf(
@@ -75,7 +75,7 @@ class StandardTrackingWheelLocalizer(hardwareMap: HardwareMap) : ThreeTrackingWh
 
         //TODO: Retune because crossbar was shifted forward
         @JvmField
-        var FORWARD_OFFSET = 0.0 // in; offset of the lateral wheel
+        var FORWARD_OFFSET = 3.0 // in; offset of the lateral wheel
 
         var X_MULTIPLIER = 0.9943625369724665 // Multiplier in the X direction
         var Y_MULTIPLIER = 0.9973390034543611 // Multiplier in the Y direction

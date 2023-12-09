@@ -12,7 +12,7 @@ enum class ControlBoard(val deviceName: String) {
     INTAKE("intake"),
 
     // Elevator
-     ELEVATOR_LEFT("elevatorLeft"),
+    ELEVATOR_LEFT("elevatorLeft"),
     ELEVATOR_RIGHT("elevatorRight"),
 
     SERVO_ELEVATOR_LEFT("leftElevatorServo"),
@@ -21,9 +21,9 @@ enum class ControlBoard(val deviceName: String) {
     LIMIT_SWITCH("limit"),
 
     // Odometry
-    ODO_LEFT_ENCODER("rightFront"),
-    ODO_RIGHT_ENCODER("leftFront"),
-    ODO_STRAFE_ENCODER("intake"),
+    ODO_LEFT_ENCODER("odoLeft"),
+    ODO_RIGHT_ENCODER("leftRear"),
+    ODO_STRAFE_ENCODER("rightRear"),
 
     // Camera
     CAMERA("lifecam")
