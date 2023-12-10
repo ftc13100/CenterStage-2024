@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.teleOp
 
 import com.arcrobotics.ftclib.command.CommandOpMode
+import com.arcrobotics.ftclib.command.RunCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
@@ -72,11 +73,11 @@ class MainTeleOp : CommandOpMode() {
             leftX = driver::getLeftX,
             leftY = driver::getLeftY,
             rightX = driver::getRightX,
-            zoneVal = 0.15
+            zoneVal = 0.0
         )
 
         hardwareMap.getAll(LynxModule::class.java)
-            .forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.AUTO }
+            .forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)
@@ -85,6 +86,12 @@ class MainTeleOp : CommandOpMode() {
         operator.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(dropElevatorCommand)
 
         register(driveSubsystem)
+
+        RunCommand({
+            hardwareMap.getAll(LynxModule::class.java).forEach {
+                it.clearBulkCache()
+            }
+        })
 
         driveSubsystem.defaultCommand = driveCommand
     }

@@ -6,17 +6,15 @@ import com.arcrobotics.ftclib.hardware.motors.MotorGroup
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.utils.ServoGroup
 
 class OpenElevatorSubsystem(
     leftMotor: Motor,
     rightMotor: Motor,
     private val limit: TouchSensor,
     val telemetry: Telemetry,
-    leftServo: Servo,
-    rightServo: Servo,
+    private val leftServo: Servo,
+    private val rightServo: Servo,
 ) : SubsystemBase() {
-    private val elevatorServos = ServoGroup(leftServo, rightServo)
 
     private val elevatorMotors = MotorGroup(leftMotor, rightMotor)
 
@@ -26,13 +24,12 @@ class OpenElevatorSubsystem(
     val currentVel: Double
         get() = elevatorMotors.velocities[0]
 
-    val flipped: Boolean
-        get() = elevatorServos.position == 1.0
-
 
     init {
-        rightMotor.inverted = true
-        
+        leftMotor.inverted = true
+//        leftServo.direction = Servo.Direction.REVERSE
+//        rightServo.direction = Servo.Direction.REVERSE
+
         elevatorMotors.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE)
         elevatorMotors.resetEncoder()
 //        ElevatorMotor.inverted = true
@@ -40,7 +37,6 @@ class OpenElevatorSubsystem(
 
     fun spinUp() {
         elevatorMotors.set(0.6)
-
     }
 
     fun setPower(power: Double) = elevatorMotors.set(power)
@@ -57,6 +53,8 @@ class OpenElevatorSubsystem(
 
     fun stallSpin() = elevatorMotors.stopMotor()
 
-    fun flipOuttake() =
-        if (flipped) elevatorServos.position = 0.0 else elevatorServos.position = 1.0
+    fun flipOuttake(position: Double) {
+        rightServo.position = position
+        leftServo.position = 1 - position
+    }
 }
