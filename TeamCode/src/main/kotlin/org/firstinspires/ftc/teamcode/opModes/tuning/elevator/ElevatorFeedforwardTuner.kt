@@ -10,6 +10,7 @@ import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
@@ -22,8 +23,9 @@ class ElevatorFeedforwardTuner : LinearOpMode() {
     private lateinit var leftMotor: Motor
     private lateinit var rightMotor: Motor
 
-    private lateinit var leftServo: Servo
-    private lateinit var rightServo: Servo
+    private lateinit var leftServo: CRServo
+    private lateinit var rightServo: CRServo
+    private lateinit var flipperServo: Servo
 
     private lateinit var limit: TouchSensor
 
@@ -35,14 +37,15 @@ class ElevatorFeedforwardTuner : LinearOpMode() {
         leftMotor = Motor(hardwareMap, ControlBoard.ELEVATOR_LEFT.deviceName)
         rightMotor = Motor(hardwareMap, ControlBoard.ELEVATOR_RIGHT.deviceName)
 
-        leftServo = hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
+        leftServo = hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
         rightServo =
-            hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+            hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+        flipperServo = hardwareMap.get(Servo::class.java, "flipperServo")
 
         limit = hardwareMap.get(TouchSensor::class.java, ControlBoard.LIMIT_SWITCH.deviceName)
 
         subsystem =
-            OpenElevatorSubsystem(leftMotor, rightMotor, limit, telemetry, leftServo, rightServo)
+            OpenElevatorSubsystem(leftMotor, rightMotor, flipperServo, limit, telemetry, leftServo, rightServo)
 
         val clock = NanoClock.system()
 

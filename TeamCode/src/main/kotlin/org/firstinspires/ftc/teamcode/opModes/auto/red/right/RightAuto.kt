@@ -18,7 +18,7 @@ class RightAuto : OpMode() {
     private lateinit var visionPortal: VisionPortal
 
     private lateinit var aprilTag: AprilTagProcessor
-    private lateinit var beaverProcessor: BeaverProcessor
+//    private lateinit var beaverProcessor: BeaverProcessor
 
     private lateinit var drive: DriveSubsystem
 
@@ -30,30 +30,31 @@ class RightAuto : OpMode() {
 
         drive = DriveSubsystem(hardwareMap)
 
-        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
+//        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
 
     override fun init_loop() {
-        telemetry.addData("Identified: ", beaverProcessor.selection)
+//        telemetry.addData("Identified: ", beaverProcessor.selection)
         telemetry.update()
 
         path = drive.trajectorySequenceBuilder(startPose)
-            .lineTo(com.acmerobotics.roadrunner.geometry.Vector2d(10.0, -35.0))
-            .addTemporalMarker(2.0) {
-                drive.poseEstimate
-            }
-            .waitSeconds(2.0)
-            .lineToSplineHeading(
-                Pose2d(
-                    35.0,
-                    -35.0,
-                    Math.toRadians(180.0)
-                )
-            )
-            .addTemporalMarker(8.0) {
-                drive.poseEstimate
-            }
-            .waitSeconds(3.0)
+//            .lineTo(Vector2d(10.0, -35.0))
+//            .addTemporalMarker(2.0) {
+//                drive.poseEstimate
+//            }
+//            .waitSeconds(2.0)
+            .lineToSplineHeading(Pose2d(10.0, -61.5, Math.toRadians(90.0)))
+//            .lineToSplineHeading(
+//                Pose2d(
+//                    35.0,
+//                    -35.0,
+//                    Math.toRadians(180.0)
+//                )
+//            )
+//            .addTemporalMarker(8.0) {
+//                drive.poseEstimate
+//            }
+//            .waitSeconds(3.0)
             .build()
     }
 
@@ -63,15 +64,13 @@ class RightAuto : OpMode() {
     }
 
     override fun loop() {
-        telemetry.addData("Identified ", beaverProcessor.selection)
+//        telemetry.addData("Identified ", beaverProcessor.selection)
 
         for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {
                 telemetry.addLine(
                     String.format(
-                        "\n==== (ID %d) %s",
-                        detection.id,
-                        detection.metadata.name
+                        "\n==== (ID %d) %s", detection.id, detection.metadata.name
                     )
                 )
                 telemetry.addLine(
@@ -102,9 +101,7 @@ class RightAuto : OpMode() {
                 telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id))
                 telemetry.addLine(
                     String.format(
-                        "Center %6.0f %6.0f   (pixels)",
-                        detection.center.x,
-                        detection.center.y
+                        "Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y
                     )
                 )
             }
@@ -121,10 +118,9 @@ class RightAuto : OpMode() {
     private fun initVisionPortal() {
         aprilTag = AprilTagProcessor.easyCreateWithDefaults()
 
-        visionPortal = VisionPortal.Builder()
-            .setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
-            .addProcessors(aprilTag, beaverProcessor)
-            .setCameraResolution(Size(640, 480))
-            .build()
+        visionPortal =
+            VisionPortal.Builder().setCamera(hardwareMap.get(WebcamName::class.java, "lifecam"))
+                .addProcessors(aprilTag).setCameraResolution(Size(640, 480))
+                .build()
     }
 }

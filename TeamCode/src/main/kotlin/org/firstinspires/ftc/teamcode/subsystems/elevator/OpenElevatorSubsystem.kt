@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.elevator
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.arcrobotics.ftclib.hardware.motors.MotorGroup
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.robotcore.external.Telemetry
@@ -10,10 +11,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 class OpenElevatorSubsystem(
     leftMotor: Motor,
     rightMotor: Motor,
+    private val flipperServo: Servo,
     private val limit: TouchSensor,
     val telemetry: Telemetry,
-    private val leftServo: Servo,
-    private val rightServo: Servo,
+    private val leftServo: CRServo,
+    private val rightServo: CRServo,
 ) : SubsystemBase() {
 
     private val elevatorMotors = MotorGroup(leftMotor, rightMotor)
@@ -54,7 +56,11 @@ class OpenElevatorSubsystem(
     fun stallSpin() = elevatorMotors.stopMotor()
 
     fun flipOuttake(position: Double) {
-        rightServo.position = position
-        leftServo.position = 1 - position
+        rightServo.power = position
+        leftServo.power = -position
+    }
+
+    fun runFlipper(position: Double) {
+        flipperServo.position = position
     }
 }

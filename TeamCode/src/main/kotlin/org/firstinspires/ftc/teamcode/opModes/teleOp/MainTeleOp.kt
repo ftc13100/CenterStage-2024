@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.opModes.teleOp
 
 import com.arcrobotics.ftclib.command.CommandOpMode
-import com.arcrobotics.ftclib.command.RunCommand
+import com.arcrobotics.ftclib.command.InstantCommand
+import com.arcrobotics.ftclib.command.StartEndCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
-import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSubsystem
 
 @TeleOp
 class MainTeleOp : CommandOpMode() {
+    private lateinit var flipperServo: Servo
     private lateinit var driveSubsystem: DriveSubsystem
     private lateinit var intakeSubsystem: IntakeSubsystem
     private lateinit var elevatorSubsystem: OpenElevatorSubsystem
@@ -34,8 +36,8 @@ class MainTeleOp : CommandOpMode() {
     private lateinit var elevatorLeft: Motor
     private lateinit var elevatorRight: Motor
 
-    private lateinit var servoLeft: Servo
-    private lateinit var servoRight: Servo
+    private lateinit var servoLeft: CRServo
+    private lateinit var servoRight: CRServo
 
     private lateinit var limit: TouchSensor
 
@@ -48,16 +50,19 @@ class MainTeleOp : CommandOpMode() {
         elevatorLeft = Motor(hardwareMap, ControlBoard.ELEVATOR_LEFT.deviceName)
         elevatorRight = Motor(hardwareMap, ControlBoard.ELEVATOR_RIGHT.deviceName)
 
-        servoLeft = hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
+        servoLeft = hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
         servoRight =
-            hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+            hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+        flipperServo = hardwareMap.get(Servo::class.java, "flipperServo")
 
         limit = hardwareMap.get(TouchSensor::class.java, ControlBoard.LIMIT_SWITCH.deviceName)
 
         driveSubsystem = DriveSubsystem(hardwareMap)
         intakeSubsystem = IntakeSubsystem(intake)
 
-        elevatorSubsystem = OpenElevatorSubsystem(elevatorLeft, elevatorRight, limit, telemetry, servoLeft, servoRight)
+        elevatorSubsystem = OpenElevatorSubsystem(
+            elevatorLeft, elevatorRight, flipperServo, limit, telemetry, servoLeft, servoRight
+        )
 
         driver = GamepadEx(gamepad1)
         operator = GamepadEx(gamepad2)
@@ -76,8 +81,8 @@ class MainTeleOp : CommandOpMode() {
             zoneVal = 0.0
         )
 
-        hardwareMap.getAll(LynxModule::class.java)
-            .forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
+//        hardwareMap.getAll(LynxModule::class.java)
+//            .forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
         driver.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whileHeld(intakeCommand)
         driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whileHeld(outtakeCommand)
@@ -87,11 +92,31 @@ class MainTeleOp : CommandOpMode() {
 
         register(driveSubsystem)
 
-        RunCommand({
-            hardwareMap.getAll(LynxModule::class.java).forEach {
-                it.clearBulkCache()
-            }
-        })
+//        RunCommand({
+//            hardwareMap.getAll(LynxModule::class.java).forEach {
+//                it.clearBulkCache()
+//            }
+//        })
+
+        operator.getGamepadButton(GamepadKeys.Button.A).whileHeld(StartEndCommand({
+            elevatorSubsystem.flipOuttake(-0.4)
+        }, {
+            elevatorSubsystem.flipOuttake(0.0)
+        }))
+
+        operator.getGamepadButton(GamepadKeys.Button.B).whileHeld(StartEndCommand({
+            elevatorSubsystem.flipOuttake(0.4)
+        }, {
+            elevatorSubsystem.flipOuttake(0.0)
+        }))
+
+        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(InstantCommand({
+            elevatorSubsystem.runFlipper(1.0)
+        }))
+
+        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(InstantCommand({
+            elevatorSubsystem.runFlipper(0.4)
+        }))
 
         driveSubsystem.defaultCommand = driveCommand
     }

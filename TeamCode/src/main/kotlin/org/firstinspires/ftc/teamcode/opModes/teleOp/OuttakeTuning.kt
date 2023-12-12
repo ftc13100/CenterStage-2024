@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.command.RunCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
@@ -14,13 +15,14 @@ import org.firstinspires.ftc.teamcode.subsystems.elevator.OpenElevatorSubsystem
 @Config
 @TeleOp
 class OuttakeTuning() : CommandOpMode(){
+    private lateinit var flipperServo: Servo
     private lateinit var elevatorSubsystem: OpenElevatorSubsystem
 
     private lateinit var elevatorLeft: Motor
     private lateinit var elevatorRight: Motor
 
-    private lateinit var servoLeft: Servo
-    private lateinit var servoRight: Servo
+    private lateinit var servoLeft: CRServo
+    private lateinit var servoRight: CRServo
 
     private lateinit var limit: TouchSensor
 
@@ -30,24 +32,27 @@ class OuttakeTuning() : CommandOpMode(){
         elevatorLeft = Motor(hardwareMap, ControlBoard.ELEVATOR_LEFT.deviceName)
         elevatorRight = Motor(hardwareMap, ControlBoard.ELEVATOR_RIGHT.deviceName)
 
-        servoLeft = hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
+        servoLeft = hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
         servoRight =
-            hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+            hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+
+        flipperServo = hardwareMap.get(Servo::class.java, "flipperServo")
+
 
         limit = hardwareMap.get(TouchSensor::class.java, ControlBoard.LIMIT_SWITCH.deviceName)
 
-        elevatorSubsystem = OpenElevatorSubsystem(elevatorLeft, elevatorRight, limit, telemetry, servoLeft, servoRight)
+        elevatorSubsystem = OpenElevatorSubsystem(elevatorLeft, elevatorRight, flipperServo, limit, telemetry, servoLeft, servoRight)
 
         driver = GamepadEx(gamepad1)
         operator = GamepadEx(gamepad2)
 
         RunCommand({
-            elevatorSubsystem.flipOuttake(position)
+            elevatorSubsystem.runFlipper(position)
         }).schedule()
     }
 
     companion object {
         @JvmField
-        var position = 1.0
+        var position = 0.0
     }
 }

@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import com.qualcomm.robotcore.util.ElapsedTime
@@ -17,11 +18,12 @@ import org.firstinspires.ftc.teamcode.subsystems.elevator.OpenElevatorSubsystem
 
 @Autonomous
 class ElevatorConstraintsTuner : LinearOpMode() {
+    private lateinit var flipperServo: Servo
     private lateinit var leftMotor: Motor
     private lateinit var rightMotor: Motor
 
-    private lateinit var leftServo: Servo
-    private lateinit var rightServo: Servo
+    private lateinit var leftServo: CRServo
+    private lateinit var rightServo: CRServo
 
     private lateinit var limit: TouchSensor
 
@@ -38,15 +40,16 @@ class ElevatorConstraintsTuner : LinearOpMode() {
         leftMotor = Motor(hardwareMap, ELEVATOR_LEFT.deviceName)
         rightMotor = Motor(hardwareMap, ELEVATOR_RIGHT.deviceName)
 
-        leftServo = hardwareMap.get(Servo::class.java, SERVO_ELEVATOR_LEFT.deviceName)
-        rightServo = hardwareMap.get(Servo::class.java, SERVO_ELEVATOR_RIGHT.deviceName)
+        leftServo = hardwareMap.get(CRServo::class.java, SERVO_ELEVATOR_LEFT.deviceName)
+        rightServo = hardwareMap.get(CRServo::class.java, SERVO_ELEVATOR_RIGHT.deviceName)
+        flipperServo = hardwareMap.get(Servo::class.java, "flipperServo")
 
         limit = hardwareMap.get(TouchSensor::class.java, LIMIT_SWITCH.deviceName)
 
         telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 
         elevator =
-            OpenElevatorSubsystem(leftMotor, rightMotor, limit, telemetry, leftServo, rightServo)
+            OpenElevatorSubsystem(leftMotor, rightMotor, flipperServo, limit, telemetry, leftServo, rightServo)
 
         waitForStart()
 

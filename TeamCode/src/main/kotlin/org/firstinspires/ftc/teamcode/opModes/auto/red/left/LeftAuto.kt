@@ -22,7 +22,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous(name = "Left Auto (Red)", group = "Red Auto")
 class LeftAuto : OpMode() {
-    private lateinit var beaverProcessor: BeaverProcessor
+//    private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
 
     private lateinit var aprilTag: AprilTagProcessor
@@ -39,110 +39,110 @@ class LeftAuto : OpMode() {
 
         drive = DriveSubsystem(hardwareMap)
 
-        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
+//        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
 
     override fun init_loop() {
-        val selection = beaverProcessor.selection
+//        val selection = beaverProcessor.selection
 
-        telemetry.addData("Identified: ", selection)
-        telemetry.update()
-
+//        telemetry.addData("Identified: ", selection)
+//        telemetry.update()
         path = drive.trajectorySequenceBuilder(startPose)
-            .lineTo(Vector2d(-36.0, -35.0))
-            .apply {
-                when (selection) {
-                    Selected.LEFT -> {
-                        this.lineToSplineHeading(
-                            Pose2d(
-                                -45.0,
-                                -30.0,
-                                Math.toRadians(-45.0)
-                            )
-                        )
-                    }
-
-                    Selected.CENTER -> {
-                        this.lineTo(
-                            Vector2d(
-                                -36.0,
-                                -30.0
-                            )
-                        )
-                    }
-
-                    Selected.RIGHT -> {
-                        this.lineToSplineHeading(
-                            Pose2d(
-                                -30.0,
-                                -30.0,
-                                Math.toRadians(-135.0)
-                            )
-                        )
-                    }
-
-                    else -> {
-                        this.lineToSplineHeading(
-                            Pose2d(
-                                -45.0,
-                                -30.0,
-                                Math.toRadians(-45.0)
-                            )
-                        )
-                    }
-                }
-            }
-            .waitSeconds(1.0)
-            .lineTo(Vector2d(-36.0, -35.0))
-            .apply {
-                if (selection == Selected.RIGHT)
-                    this
-                        .lineToSplineHeading(
-                            Pose2d(
-                                -36.0,
-                                -58.0,
-                                Math.toRadians(-90.0)
-                            )
-                        )
-                        .lineTo(
-                            Vector2d(
-                                -10.0,
-                                -58.0
-                            )
-                        )
-                        .lineTo(
-                            Vector2d(
-                                -10.0,
-                                -35.0
-                            )
-                        )
-            }
+//            .lineTo(Vector2d(-36.0, -35.0))
+//            .apply {
+//                when (selection) {
+//                    Selected.LEFT -> {
+//                        this.lineToSplineHeading(
+//                            Pose2d(
+//                                -45.0,
+//                                -30.0,
+//                                Math.toRadians(-45.0)
+//                            )
+//                        )
+//                    }
+//
+//                    Selected.CENTER -> {
+//                        this.lineTo(
+//                            Vector2d(
+//                                -36.0,
+//                                -30.0
+//                            )
+//                        )
+//                    }
+//
+//                    Selected.RIGHT -> {
+//                        this.lineToSplineHeading(
+//                            Pose2d(
+//                                -30.0,
+//                                -30.0,
+//                                Math.toRadians(-135.0)
+//                            )
+//                        )
+//                    }
+//
+//                    else -> {
+//                        this.lineToSplineHeading(
+//                            Pose2d(
+//                                -45.0,
+//                                -30.0,
+//                                Math.toRadians(-45.0)
+//                            )
+//                        )
+//                    }
+//                }
+//            }
+//            .waitSeconds(1.0)
+//            .lineTo(Vector2d(-36.0, -35.0))
+//            .apply {
+//                if (selection == Selected.RIGHT)
+//                    this
+//                        .lineToSplineHeading(
+//                            Pose2d(
+//                                -36.0,
+//                                -58.0,
+//                                Math.toRadians(-90.0)
+//                            )
+//                        )
+//                        .lineTo(
+//                            Vector2d(
+//                                -10.0,
+//                                -58.0
+//                            )
+//                        )
+//                        .lineTo(
+//                            Vector2d(
+//                                -10.0,
+//                                -35.0
+//                            )
+//                        )
+//            }
             .lineToSplineHeading(
                 Pose2d(
-                    35.0,
-                    -35.0,
-                    Math.toRadians(180.0)
+                    10.0,
+                    -61.5,
+                    Math.toRadians(90.0)
                 )
             )
-            .addTemporalMarker(
-                when (selection) {
-                    Selected.LEFT -> 8.0
-                    Selected.RIGHT -> 13.0
-                    Selected.CENTER -> 8.0
-                    Selected.NONE -> 8.0
-                }
-            ) {
-
-            }
-            .waitSeconds(3.0)
+//            .addTemporalMarker(
+//                when (selection) {
+//                    Selected.LEFT -> 8.0
+//                    Selected.RIGHT -> 13.0
+//                    Selected.CENTER -> 8.0
+//                    Selected.NONE -> 8.0
+//                }
+//            ) {
+//
+//            }
+//            .waitSeconds(3.0)
             .build()
+
     }
 
     override fun start() {
         drive.poseEstimate = startPose
         drive.followTrajectorySequenceAsync(path)
 
-        visionPortal.setProcessorEnabled(beaverProcessor, false)
+//        visionPortal.setProcessorEnabled(beaverProcessor, false)
     }
 
     override fun loop() {
@@ -162,7 +162,7 @@ class LeftAuto : OpMode() {
             .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
             .build()
 
-        beaverProcessor = BeaverProcessor(telemetry)
+//        beaverProcessor = BeaverProcessor(telemetry)
 
         visionPortal = VisionPortal.Builder()
             .setCamera(hardwareMap.get(WebcamName::class.java, ControlBoard.CAMERA.deviceName))
@@ -170,12 +170,12 @@ class LeftAuto : OpMode() {
             .setAutoStopLiveView(true)
             .setCameraResolution(Size(640, 480))
             .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-            .addProcessors(aprilTag, beaverProcessor)
+            .addProcessors(aprilTag)
             .build()
     }
 
     private fun updateTelemetry() {
-        telemetry.addData("Identified: ", beaverProcessor.selection)
+//        telemetry.addData("Identified: ", beaverProcessor.selection)
 
         for (detection: AprilTagDetection in aprilTag.detections) {
             if (detection.metadata != null) {

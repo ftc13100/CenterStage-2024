@@ -23,17 +23,16 @@ object RedRightTrussAuto {
 //            .build()
             .followTrajectorySequence {
                 it.trajectorySequenceBuilder(startPose)
-
-                    .lineTo(Vector2d(10.0, -35.0))
-                    .addTemporalMarker(2.0) {
-                        it.poseEstimate
-                    }
-                    .waitSeconds(2.0)
-                    .lineToSplineHeading(Pose2d(47.5, -35.0, Math.toRadians(180.0)))
-                    .addTemporalMarker(8.0) {
-                        it.poseEstimate
-                    }
-                    .waitSeconds(3.0)
+//                    .lineTo(Vector2d(10.0, -35.0))
+//                    .addTemporalMarker(2.0) {
+//                        it.poseEstimate
+//                    }
+//                    .waitSeconds(2.0)
+                    .lineToSplineHeading(Pose2d(50.0, -61.5, Math.toRadians(90.0)))
+//                    .addTemporalMarker(8.0) {
+//                        it.poseEstimate
+//                    }
+//                    .waitSeconds(3.0)
                     .build()
             }
 

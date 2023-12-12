@@ -31,7 +31,7 @@ class LeftAuto : OpMode() {
 
         drive = DriveSubsystem(hardwareMap)
 
-        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
+//        FtcDashboard.getInstance().startCameraStream(beaverProcessor, visionPortal.fps.toDouble())
     }
 
     override fun init_loop() {
