@@ -4,7 +4,6 @@ import android.util.Size
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.acmerobotics.roadrunner.geometry.Pose2d
-import com.acmerobotics.roadrunner.geometry.Vector2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
@@ -12,8 +11,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
 import org.firstinspires.ftc.teamcode.constants.PoseStorage
-import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
-import org.firstinspires.ftc.teamcode.processors.BeaverProcessor.Selected
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.vision.VisionPortal
@@ -22,7 +19,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 
 @Autonomous(name = "Left Auto (Red)", group = "Red Auto")
 class LeftAuto : OpMode() {
-//    private lateinit var beaverProcessor: BeaverProcessor
+    //    private lateinit var beaverProcessor: BeaverProcessor
     private lateinit var visionPortal: VisionPortal
 
     private lateinit var aprilTag: AprilTagProcessor

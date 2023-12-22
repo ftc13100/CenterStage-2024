@@ -1,12 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.red.right
 
 import android.util.Size
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.roadrunner.geometry.Pose2d
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
-import org.firstinspires.ftc.teamcode.processors.BeaverProcessor
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.utils.roadrunner.trajectorysequence.TrajectorySequence
 import org.firstinspires.ftc.vision.VisionPortal

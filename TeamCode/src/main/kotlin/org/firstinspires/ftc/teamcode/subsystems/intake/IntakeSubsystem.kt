@@ -6,9 +6,9 @@ import com.arcrobotics.ftclib.hardware.motors.Motor
 class IntakeSubsystem(
     private val intake: Motor,
 ) : SubsystemBase() {
-    fun intake() = intake.set(0.4)
+    fun intake() = intake.set(0.6)
 
-    fun outtake() = intake.set(-0.4)
+    fun outtake() = intake.set(-0.6)
 
     fun stop() = intake.stopMotor()
 }

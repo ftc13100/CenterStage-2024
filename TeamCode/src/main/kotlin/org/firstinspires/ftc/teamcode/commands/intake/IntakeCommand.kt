@@ -10,6 +10,7 @@ class IntakeCommand(
     init {
         addRequirements(subsystem)
     }
+
     override fun execute() = if (intake) {
         subsystem.intake()
     } else {

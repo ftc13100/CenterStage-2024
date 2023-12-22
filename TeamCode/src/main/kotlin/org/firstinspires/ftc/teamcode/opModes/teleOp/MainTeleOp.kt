@@ -2,12 +2,10 @@ package org.firstinspires.ftc.teamcode.opModes.teleOp
 
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.InstantCommand
-import com.arcrobotics.ftclib.command.StartEndCommand
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.TouchSensor
 import org.firstinspires.ftc.teamcode.commands.drive.DriveCommand
@@ -36,8 +34,8 @@ class MainTeleOp : CommandOpMode() {
     private lateinit var elevatorLeft: Motor
     private lateinit var elevatorRight: Motor
 
-    private lateinit var servoLeft: CRServo
-    private lateinit var servoRight: CRServo
+    private lateinit var servoLeft: Servo
+    private lateinit var servoRight: Servo
 
     private lateinit var limit: TouchSensor
 
@@ -50,9 +48,9 @@ class MainTeleOp : CommandOpMode() {
         elevatorLeft = Motor(hardwareMap, ControlBoard.ELEVATOR_LEFT.deviceName)
         elevatorRight = Motor(hardwareMap, ControlBoard.ELEVATOR_RIGHT.deviceName)
 
-        servoLeft = hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
+        servoLeft = hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_LEFT.deviceName)
         servoRight =
-            hardwareMap.get(CRServo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
+            hardwareMap.get(Servo::class.java, ControlBoard.SERVO_ELEVATOR_RIGHT.deviceName)
         flipperServo = hardwareMap.get(Servo::class.java, "flipperServo")
 
         limit = hardwareMap.get(TouchSensor::class.java, ControlBoard.LIMIT_SWITCH.deviceName)
@@ -78,7 +76,7 @@ class MainTeleOp : CommandOpMode() {
             leftX = driver::getLeftX,
             leftY = driver::getLeftY,
             rightX = driver::getRightX,
-            zoneVal = 0.0
+            zoneVal = 0.15
         )
 
 //        hardwareMap.getAll(LynxModule::class.java)
@@ -98,25 +96,23 @@ class MainTeleOp : CommandOpMode() {
 //            }
 //        })
 
-        operator.getGamepadButton(GamepadKeys.Button.A).whileHeld(StartEndCommand({
-            elevatorSubsystem.flipOuttake(-0.4)
-        }, {
-            elevatorSubsystem.flipOuttake(0.0)
-        }))
+        operator.getGamepadButton(GamepadKeys.Button.A).toggleWhenPressed(
+            InstantCommand({
+                elevatorSubsystem.flipOuttake(0.3)
+            }),
+            InstantCommand({
+                elevatorSubsystem.flipOuttake(0.5)
+            })
+        )
 
-        operator.getGamepadButton(GamepadKeys.Button.B).whileHeld(StartEndCommand({
-            elevatorSubsystem.flipOuttake(0.4)
-        }, {
-            elevatorSubsystem.flipOuttake(0.0)
-        }))
-
-        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(InstantCommand({
-            elevatorSubsystem.runFlipper(1.0)
-        }))
-
-        operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(InstantCommand({
-            elevatorSubsystem.runFlipper(0.4)
-        }))
+        operator.getGamepadButton(GamepadKeys.Button.B).toggleWhenPressed(
+            InstantCommand({
+                elevatorSubsystem.runFlipper(0.35)
+            }),
+            InstantCommand({
+                elevatorSubsystem.runFlipper(0.6)
+            })
+        )
 
         driveSubsystem.defaultCommand = driveCommand
     }

@@ -70,10 +70,9 @@ class StandardTrackingWheelLocalizer(hardwareMap: HardwareMap) : ThreeTrackingWh
         private const val WHEEL_RADIUS = 0.74803 // in
         private const val GEAR_RATIO = 1.0 // output (wheel) speed / input (encoder) speed
 
-        @JvmField
+        @JvmField // TODO: Slight overshoot, CAD reports 15.118 in
         var LATERAL_DISTANCE = 15.48986087647907 // in; distance between the left and right wheels
 
-        //TODO: Retune because crossbar was shifted forward
         @JvmField
         var FORWARD_OFFSET = 3.0 // in; offset of the lateral wheel
 
