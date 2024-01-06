@@ -281,12 +281,13 @@ class DriveSubsystem @JvmOverloads constructor(
         var DESIRED_TAG_DISTANCE = 12.0
 
         @JvmField
-        var TRANSLATIONAL_PID = PIDCoefficients(6.0, 0.0, 0.0)
+        var TRANSLATIONAL_PID = PIDCoefficients(8.0, 0.0, 0.0)
 
         @JvmField
-        var HEADING_PID = PIDCoefficients(6.0, 0.0, 0.0)
+        var HEADING_PID = PIDCoefficients(8.0, 0.0, 0.0)
 
-        var LATERAL_MULTIPLIER = 1.0
+        @JvmField
+        var LATERAL_MULTIPLIER = 1.47
 
         var VX_WEIGHT = 1.0
         var VY_WEIGHT = 1.0

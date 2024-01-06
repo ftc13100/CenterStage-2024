@@ -55,7 +55,7 @@ object DriveConstants {
     var GEAR_RATIO = 0.5 // output (wheel) speed / input (motor) speed
 
     @JvmField
-    var TRACK_WIDTH = 17.0 // in
+    var TRACK_WIDTH = 14.94 // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -64,13 +64,13 @@ object DriveConstants {
      * empirically tuned.
      */
     @JvmField
-    var kV = 0.0265
+    var kV = 0.0255
 
     @JvmField
-    var kA = 0.005
+    var kA = 0.0039
 
     @JvmField
-    var kStatic = 0.01
+    var kStatic = 0.00191
 
     /*
      * These values are used to generate the trajectories for you robot. To ensure proper operation,

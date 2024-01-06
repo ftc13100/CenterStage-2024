@@ -11,13 +11,13 @@ enum class AutoStartPose(val startPose: Pose2d) {
 
     RED_RIGHT(
         Pose2d(
-            10.0, -61.5, Math.toRadians(90.0)
+            10.0, -61.5, Math.toRadians(0.0)
         )
     ),
 
     BLUE_LEFT(
         Pose2d(
-            10.0, 61.5, Math.toRadians(-90.0)
+            10.0, 61.5, Math.toRadians(0.0)
         )
     ),
 

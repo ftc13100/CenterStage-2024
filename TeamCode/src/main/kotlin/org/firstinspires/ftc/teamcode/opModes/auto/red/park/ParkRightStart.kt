@@ -7,8 +7,9 @@ import org.firstinspires.ftc.teamcode.constants.AutoStartPose
 import org.firstinspires.ftc.teamcode.constants.ControlBoard
 import org.firstinspires.ftc.teamcode.subsystems.drive.DriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeSubsystem
+import org.firstinspires.ftc.teamcode.utils.roadrunner.drive.DriveConstants
 
-@Autonomous
+@Autonomous(name = "Red Park (Right)", preselectTeleOp = "MainTeleOp")
 class ParkRightStart : OpMode() {
     private lateinit var intakeMotor: Motor
 
@@ -21,9 +22,14 @@ class ParkRightStart : OpMode() {
         intakeSubsystem = IntakeSubsystem(intakeMotor)
 
         val trajectory = driveSubsystem.trajectorySequenceBuilder(AutoStartPose.RED_RIGHT.startPose)
-            .strafeRight(45.0)
+            .strafeLeft(2.0)
+            .forward(42.0,
+                DriveSubsystem.getVelocityConstraint(DriveConstants.MAX_VEL, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                DriveSubsystem.getAccelerationConstraint(50.0)
+            )
             .build()
 
+        driveSubsystem.poseEstimate = AutoStartPose.RED_RIGHT.startPose
         driveSubsystem.followTrajectorySequenceAsync(trajectory)
     }
 
