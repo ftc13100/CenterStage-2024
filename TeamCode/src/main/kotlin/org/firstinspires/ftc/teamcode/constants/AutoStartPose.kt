@@ -23,7 +23,7 @@ enum class AutoStartPose(val startPose: Pose2d) {
 
     BLUE_RIGHT(
         Pose2d(
-            -36.0, 61.5, Math.toRadians(-90.0)
+            -36.0, 61.5, Math.toRadians(0.0)
         )
     ),
 }

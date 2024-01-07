@@ -10,5 +10,6 @@ class IntakeSubsystem(
 
     fun outtake() = intake.set(-0.6)
 
+    fun setPower(power: Double) = intake.set(power)
     fun stop() = intake.stopMotor()
 }

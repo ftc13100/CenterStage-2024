@@ -17,11 +17,16 @@ class TrajectoryCommand(
     }
 
     override fun initialize() {
-        trajectory = trajectoryToRun.invoke(startPose.invoke())
+        trajectory = trajectoryToRun.invoke(
+            startPose.invoke()
+        )
+
+        drive.poseEstimate = trajectory.start()
+        drive.followTrajectorySequenceAsync(trajectory)
     }
 
     override fun execute() {
-        drive.followTrajectorySequenceAsync(trajectory)
+        drive.update()
     }
 
     override fun isFinished(): Boolean = !drive.isBusy
